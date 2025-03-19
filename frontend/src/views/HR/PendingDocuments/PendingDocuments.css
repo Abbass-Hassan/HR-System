@@ -1,0 +1,72 @@
+.pending-documents-container {
+    padding: 24px;
+    background-color: #F9FAFB;
+    height: 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  
+  .pending-documents-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  
+  .pending-documents-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 8px 0;
+  }
+  
+  .pending-documents-subtitle {
+    font-size: 14px;
+    margin-top: 4px;
+    color: #6B7280;
+  }
+  
+  .documents-link {
+    color: #6B7280;
+  }
+  
+  .pending-link {
+    color: #2b796f;
+    font-weight: 500;
+  }
+  
+  .separator {
+    margin: 0 4px;
+    color: #9CA3AF;
+  }
+  
+  .table-controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .right-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .table-controls-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    
+    .right-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
