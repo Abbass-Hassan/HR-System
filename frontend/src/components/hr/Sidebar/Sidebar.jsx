@@ -6,7 +6,7 @@ import { MdOutlinePayments } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
-
+import { HiOutlineDocument } from "react-icons/hi"; 
 import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
 
 import "./Sidebar.css";
@@ -18,30 +18,49 @@ function Sidebar() {
   const [isEmployeeOpen, setEmployeeOpen] = useState(false);
   const [isRecruitmentOpen, setRecruitmentOpen] = useState(false);
   const [isPayrollOpen, setPayrollOpen] = useState(false);
-
+  const [isDocumentsOpen, setDocumentsOpen] = useState(false); 
   const handleParentClick = (parentId) => {
     if (parentId === "employee") {
-      setEmployeeOpen(true);
+      setEmployeeOpen(!isEmployeeOpen);
       setRecruitmentOpen(false);
       setPayrollOpen(false);
+      setDocumentsOpen(false);
       setActiveParent("employee");
-      setActiveSubItem("attendance");
+      if (!isEmployeeOpen) {
+        setActiveSubItem("attendance");
+      }
     } else if (parentId === "recruitment") {
-      setRecruitmentOpen(true);
+      setRecruitmentOpen(!isRecruitmentOpen);
       setEmployeeOpen(false);
       setPayrollOpen(false);
+      setDocumentsOpen(false);
       setActiveParent("recruitment");
-      setActiveSubItem("candidates"); 
+      if (!isRecruitmentOpen) {
+        setActiveSubItem("candidates");
+      }
     } else if (parentId === "payroll") {
-      setPayrollOpen(true);
+      setPayrollOpen(!isPayrollOpen);
       setEmployeeOpen(false);
       setRecruitmentOpen(false);
+      setDocumentsOpen(false);
       setActiveParent("payroll");
-      setActiveSubItem("payslips"); 
+      if (!isPayrollOpen) {
+        setActiveSubItem("payslips");
+      }
+    } else if (parentId === "documents") {
+      setDocumentsOpen(!isDocumentsOpen);
+      setEmployeeOpen(false);
+      setRecruitmentOpen(false);
+      setPayrollOpen(false);
+      setActiveParent("documents");
+      if (!isDocumentsOpen) {
+        setActiveSubItem("pending");
+      }
     } else {
       setEmployeeOpen(false);
       setRecruitmentOpen(false);
       setPayrollOpen(false);
+      setDocumentsOpen(false);
       setActiveParent(parentId);
       setActiveSubItem("");
     }
@@ -120,23 +139,58 @@ function Sidebar() {
                     Leave requests
                   </button>
                 </li>
+              </ul>
+            )}
+          </li>
+          
+          <li>
+            <button
+              type="button"
+              className={`sidebar__link sidebar__link--collapsible ${
+                activeParent === "documents" ? "sidebar__link--active" : ""
+              }`}
+              onClick={() => handleParentClick("documents")}
+            >
+              <div className="sidebar__link-text">
+                <HiOutlineDocument className="sidebar__icon" />
+                <span>Documents</span>
+              </div>
+              {isDocumentsOpen ? <FiChevronUp /> : <FiChevronDown />}
+            </button>
+            {isDocumentsOpen && (
+              <ul className="sidebar__submenu">
                 <li>
                   <button
                     type="button"
                     className={
-                      activeSubItem === "documents" && activeParent === "employee"
+                      activeSubItem === "pending" && activeParent === "documents"
                         ? "sidebar__sublink sidebar__sublink--active"
                         : "sidebar__sublink"
                     }
-                    onClick={() => handleSubItemClick("employee", "documents")}
+                    onClick={() => handleSubItemClick("documents", "pending")}
                   >
                     <span className="sidebar__bullet" />
-                    Documents
+                    Pending
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    className={
+                      activeSubItem === "approved" && activeParent === "documents"
+                        ? "sidebar__sublink sidebar__sublink--active"
+                        : "sidebar__sublink"
+                    }
+                    onClick={() => handleSubItemClick("documents", "approved")}
+                  >
+                    <span className="sidebar__bullet" />
+                    Approved
                   </button>
                 </li>
               </ul>
             )}
           </li>
+          
           <li>
             <button
               type="button"
