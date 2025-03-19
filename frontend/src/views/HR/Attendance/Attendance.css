@@ -1,0 +1,75 @@
+.attendance-container {
+    padding: 14px;
+    background-color: #F9FAFB;
+    height: 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .attendance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  
+  .attendance-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .summary-cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .table-controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .right-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 1200px) {
+    .summary-cards-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .summary-cards-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .table-controls-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    
+    .right-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
