@@ -1,11 +1,12 @@
 import React from "react";
 import Sidebar from "../../hr/Sidebar/Sidebar";
+import "./Layout.css";
 
 const Layout = ({ children }) => {
   return (
-    <div style={{ display: "flex" }}>
+    <div className="layout-container">
       <Sidebar />
-      <main style={{ flex: 1, padding: "1rem" }}>
+      <main className="layout-main">
         {children}
       </main>
     </div>

@@ -1,0 +1,20 @@
+.layout-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .layout-main {
+    flex: 1;
+    padding: 1rem;
+    min-width: 0;
+    max-width: 100%;
+    overflow: auto;
+    background-color: #F9FAFB;
+    box-sizing: border-box;
+    
+  }
+  

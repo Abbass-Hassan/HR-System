@@ -1,0 +1,34 @@
+.date-display-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaeaea;
+  }
+  
+  .calendar-icon {
+    width: 18px;
+    height: 18px;
+    color: #4B5563;
+  }
+  
+  .date-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4B5563;
+  }
+  
+  .date-display-container.header-date {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+  
+  .header-date .date-text {
+    color: #6B7280;
+    font-weight: 400;
+  }
