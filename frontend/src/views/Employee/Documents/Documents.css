@@ -1,0 +1,69 @@
+.documents-container {
+    padding: 24px;
+    background-color: #F9FAFB;
+    height: 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  
+  .documents-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  
+  .documents-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 8px 0;
+  }
+  
+  .table-controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .right-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .add-file-button {
+    background-color: #2e7d72;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+  }
+  
+  .add-file-button:hover {
+    background-color: #266a60;
+  }
+  
+  @media (max-width: 768px) {
+    .table-controls-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    
+    .right-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
