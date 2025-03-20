@@ -1,4 +1,4 @@
- :root {
+:root {
     --sidebar-width: 260px;
     --primary-color: #008080;
     --text-color: #4c5257;
@@ -89,7 +89,7 @@
     padding: 1rem 1rem;
     color: var(--text-color);
     font-size: 1rem;
-    transition: background-color 0.2s;
+    transition: none !important;
   }
   
   
@@ -106,6 +106,7 @@
     background-color: var(--primary-color);
     color: var(--active-text-color);
     border-radius: 10px;
+    transition: none !important;
   }
   
   .sidebar__link--active .sidebar__icon {
@@ -122,6 +123,7 @@
     color: var(--icon-color);
     display: flex;
     align-items: center;
+    transition: none !important;
   }
   
   .sidebar__submenu {
@@ -136,13 +138,14 @@
     padding: 0.6rem 0;
     color: var(--text-color);
     font-size: 0.95rem;
-    transition: color 0.2s;
+    transition: none !important;
   }
   
   
   .sidebar__sublink--active {
     color: var(--primary-color);
     font-weight: 500;
+    transition: none !important;
   }
   
   .sidebar__bullet {
@@ -152,6 +155,7 @@
     margin-right: 0.6rem;
     background-color: transparent;
     display: inline-block;
+    transition: none !important;
   }
   
   .sidebar__sublink--active .sidebar__bullet {
@@ -161,4 +165,3 @@
   .sidebar__bottom-section {
     margin-top: auto;
   }
-  

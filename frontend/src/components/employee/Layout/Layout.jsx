@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../../hr/Sidebar/Sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 import "./Layout.css";
 
 const Layout = ({ children }) => {
