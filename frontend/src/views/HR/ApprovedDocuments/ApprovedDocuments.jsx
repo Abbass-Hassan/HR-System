@@ -1,11 +1,11 @@
 import React from 'react';
-import './PendingDocuments.css';
+import './ApprovedDocuments.css';
 import SearchBar from '../../../components/hr/SearchBar/SearchBar';
 import FilterButton from '../../../components/hr/FilterButton/FilterButton';
 import DateDisplay from '../../../components/hr/DateDisplay/DateDisplay';
-import DocumentsTable from '../../../components/hr/PendingDocumentsTable/PendingDocumentsTable';
+import ApprovedDocumentsTable from '../../../components/hr/ApprovedDocumentsTable/ApprovedDocumentsTable';
 
-const PendingDocuments = () => {
+const ApprovedDocuments = () => {
   const documentsData = [
     {
       id: 1,
@@ -102,14 +102,14 @@ const PendingDocuments = () => {
   });
 
   return (
-    <div className="pending-documents-container">
-      <div className="pending-documents-header">
+    <div className="approved-documents-container">
+      <div className="approved-documents-header">
         <div>
-          <h1 className="pending-documents-title">Document Repository</h1>
-          <div className="pending-documents-subtitle">
+          <h1 className="approved-documents-title">Document Repository</h1>
+          <div className="approved-documents-subtitle">
             <span className="documents-link">Documents</span>
             <span className="separator"> / </span>
-            <span className="pending-link">Pending</span>
+            <span className="approved-link">Approved</span>
           </div>
         </div>
         <DateDisplay date={formattedDate} className="header-date" />
@@ -122,9 +122,9 @@ const PendingDocuments = () => {
         </div>
       </div>
 
-      <DocumentsTable data={documentsData} />
+      <ApprovedDocumentsTable data={documentsData} />
     </div>
   );
 };
 
-export default PendingDocuments;
+export default ApprovedDocuments;

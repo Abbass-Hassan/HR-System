@@ -1,4 +1,4 @@
-.pending-documents-container {
+.approved-documents-container {
     padding: 24px;
     background-color: #F9FAFB;
     height: 100%;
@@ -7,7 +7,7 @@
     box-sizing: border-box;
   }
   
-  .pending-documents-header {
+  .approved-documents-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -15,14 +15,14 @@
     width: 100%;
   }
   
-  .pending-documents-title {
+  .approved-documents-title {
     font-size: 24px;
     font-weight: 600;
     color: #111827;
     margin: 0 0 8px 0;
   }
   
-  .pending-documents-subtitle {
+  .approved-documents-subtitle {
     font-size: 14px;
     margin-top: 4px;
     color: #6B7280;
@@ -32,7 +32,7 @@
     color: #6B7280;
   }
   
-  .pending-link {
+  .approved-link {
     color: #2b796f;
     font-weight: 500;
   }
