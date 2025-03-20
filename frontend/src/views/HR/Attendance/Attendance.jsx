@@ -1,9 +1,9 @@
 import React from 'react';
 import './Attendance.css';
 import AttendanceSummaryCard from '../../../components/hr/AttendanceSummaryCard/AttendanceSummaryCard';
-import SearchBar from '../../../components/hr/SearchBar/SearchBar';
-import FilterButton from '../../../components/hr/FilterButton/FilterButton';
-import DateDisplay from '../../../components/hr/DateDisplay/DateDisplay';
+import SearchBar from '../../../components/common/SearchBar/SearchBar';
+import FilterButton from '../../../components/common/FilterButton/FilterButton';
+import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import AttendanceTable from '../../../components/hr/AttendanceTable/AttendanceTable';
 
 const Attendance = () => {
