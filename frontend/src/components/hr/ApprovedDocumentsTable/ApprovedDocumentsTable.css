@@ -1,4 +1,4 @@
-.documents-table-container {
+.approved-documents-table-container {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -8,12 +8,12 @@
     max-height: calc(100vh - 220px); 
   }
   
-  .documents-table {
+  .approved-documents-table {
     width: 100%;
     border-collapse: collapse;
   }
   
-  .documents-table th {
+  .approved-documents-table th {
     position: sticky;
     top: 0;
     background-color: #f9f9f9;
@@ -25,14 +25,14 @@
     border-bottom: 1px solid #eaeaea;
   }
   
-  .documents-table td {
+  .approved-documents-table td {
     padding: 16px;
     border-bottom: 1px solid #eaeaea;
     color: #374151;
     font-size: 14px;
   }
   
-  .documents-table tbody tr:hover {
+  .approved-documents-table tbody tr:hover {
     background-color: #f9f9f9;
   }
   
@@ -62,12 +62,12 @@
     background-color: #f3f4f6;
   }
   
-  .action-button.approve {
-    color: #2e7d32;
+  .action-button.edit {
+    color: #008080; 
   }
   
-  .action-button.reject {
-    color: #d32f2f;
+  .action-button.delete {
+    color: #d32f2f; 
   }
   
   .empty-state {
@@ -80,12 +80,12 @@
   }
   
   @media (max-width: 768px) {
-    .documents-table-container {
+    .approved-documents-table-container {
       max-height: none;
       overflow-x: auto;
     }
     
-    .documents-table {
+    .approved-documents-table {
       min-width: 600px;
     }
   }

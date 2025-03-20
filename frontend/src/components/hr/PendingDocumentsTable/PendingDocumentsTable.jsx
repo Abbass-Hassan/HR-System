@@ -1,5 +1,5 @@
 import React from 'react';
-import './DocumentsTable.css';
+import './PendingDocumentsTable.css';
 import { CheckCircle, XCircle } from 'lucide-react';
 
 const DocumentsTable = ({ data }) => {
