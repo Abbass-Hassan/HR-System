@@ -12,6 +12,11 @@ import HRApprovedDocs from "./views/HR/ApprovedDocuments/ApprovedDocuments";
 // Employee Pages
 import EmployeeDashboardPage from "./views/Employee/Dashboard/Dashboard";
 
+// Common Pages
+import Login from "./views/Common/Login/login";
+
+
+
 function App() {
   return (
     <Router>
@@ -25,6 +30,8 @@ function App() {
         {/* Employee Routes */}
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />
         
+        {/* Common Routes */}
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );
