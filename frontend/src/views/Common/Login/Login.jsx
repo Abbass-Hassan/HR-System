@@ -32,6 +32,7 @@ function Login() {
           <div className="login-btn">
             <button>Login</button>
           </div>
+          
           <div className="apply">
             <p>Do you want to join our company?</p>
             <p>Click Here</p>
