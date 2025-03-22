@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Documents.css';
 import SearchBar from '../../../components/common/SearchBar/SearchBar';
 import FilterButton from '../../../components/common/FilterButton/FilterButton';
@@ -6,6 +7,7 @@ import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import DocumentsTable from '../../../components/employee/DocumentsTable/DocumentsTable';
 
 const Documents = () => {
+  const navigate = useNavigate();
   const documentsData = [
     {
       id: 1,
@@ -39,7 +41,7 @@ const Documents = () => {
   };
 
   const handleAddFile = () => {
-    console.log('Add file button clicked');
+    navigate('/employee/documents/add');
   };
 
   const currentDate = new Date();
