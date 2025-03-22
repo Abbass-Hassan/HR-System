@@ -12,6 +12,7 @@ import HRApprovedDocs from "./views/HR/ApprovedDocuments/ApprovedDocuments";
 // Employee Pages
 import EmployeeDashboardPage from "./views/Employee/Dashboard/Dashboard";
 import EmployeeDocumentsPage from "./views/Employee/Documents/Documents";
+import AddFilePage from "./views/Employee/AddFile/AddFile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         {/* Employee Routes */}
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />
         <Route path="/employee/documents" element={<EmployeeLayout><EmployeeDocumentsPage /></EmployeeLayout>} />
+        <Route path="/employee/documents/add" element={<EmployeeLayout><AddFilePage /></EmployeeLayout>} />
         
       </Routes>
     </Router>
