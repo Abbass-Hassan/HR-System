@@ -3,9 +3,11 @@
 namespace App\Models;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\UserDetails;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+
 
 class User extends Authenticatable implements JWTSubject{
     use HasFactory, Notifiable;
@@ -28,5 +30,9 @@ class User extends Authenticatable implements JWTSubject{
 
     public function getJWTCustomClaims(){
         return [];
+    }
+
+    public function userdetail(){
+        return $this->hasOne(UserDetail::class);
     }
 }
