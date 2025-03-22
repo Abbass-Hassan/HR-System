@@ -10,12 +10,10 @@ use App\Http\Controllers\Controller;
 class AuthController extends Controller
 {
     function login(Request $request){
-
         $credentials = [
             "email" => $request["email"],
             "password"=> $request["password"]
         ];
-
 
         if (! $token = Auth::attempt($credentials)) {
             return response()->json([
@@ -25,11 +23,6 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        return response()->json([
-            "success" => true,
-            "user" => $user
-        ]);
-
         $user->token = $token;
 
         return response()->json([
@@ -38,14 +31,14 @@ class AuthController extends Controller
         ]);
     }
 
-    function signup(Request $request){
+    function signup(Request $request) {
         $user = new User;
-        $user->first_name = "Rawan";
-        $user->last_name = "Ghobar";
-        $user->status="active";
-        $user->account_type="employee";
-        $user->email = $request["email"];
-        $user->password = bcrypt($request["password"]);
+        $user->first_name = $request['first_name'];
+        $user->last_name = $request['last_name'];
+        $user->status =$request['status'];
+        $user->account_type =$request['account_type'];
+        $user->email = $request['email'];
+        $user->password = bcrypt($request['password']);
         $user->save();
 
         return response()->json([
