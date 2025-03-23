@@ -131,6 +131,10 @@ p{
     padding:0;
 }
 
+.error{
+    color: #DC143C;
+}
+
 @media only screen and (max-width: 1230px) {
 p{
     font-size: 15px;
