@@ -1,5 +1,5 @@
 import React from 'react';
-import StatusBadge from '../StatusBadge/StatusBadge';
+import StatusBadge from '../../common/StatusBadge/StatusBadge';
 import './AttendanceTable.css';
 
 const AttendanceTable = ({ data }) => {
