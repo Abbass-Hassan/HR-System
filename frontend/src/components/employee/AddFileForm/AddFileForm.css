@@ -1,0 +1,31 @@
+.add-file-form {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaeaea;
+    padding: 32px;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .submit-btn {
+    background-color: #2e7d72;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #266a60;
+  }
+  
+  .submit-btn:disabled {
+    background-color: #9CA3AF;
+    cursor: not-allowed;
+  }

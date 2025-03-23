@@ -11,6 +11,8 @@ import HRApprovedDocs from "./views/HR/ApprovedDocuments/ApprovedDocuments";
 
 // Employee Pages
 import EmployeeDashboardPage from "./views/Employee/Dashboard/Dashboard";
+import EmployeeDocumentsPage from "./views/Employee/Documents/Documents";
+import AddFilePage from "./views/Employee/AddFile/AddFile";
 
 // Common Pages
 import Login from "./views/Common/Login/login";
@@ -29,6 +31,8 @@ function App() {
         
         {/* Employee Routes */}
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />
+        <Route path="/employee/documents" element={<EmployeeLayout><EmployeeDocumentsPage /></EmployeeLayout>} />
+        <Route path="/employee/documents/add" element={<EmployeeLayout><AddFilePage /></EmployeeLayout>} />
         
         {/* Common Routes */}
         <Route path="/" element={<Login />} />
