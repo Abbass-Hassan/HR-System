@@ -13,7 +13,7 @@ function Login() {
 
   const onLoginSuccess = () => {
     const accountType = localStorage.getItem('account_type');
-    if (accountType === 'HR') {
+    if (accountType === 'hr') {
       navigate('/hr');
     } else {
       navigate('/employee');
@@ -23,7 +23,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('api/guest/login', { email, password });
+      const response = await api.post('api/v0.1/guest/login', { email, password });
       if (response.data.success) {
         localStorage.setItem('token', response.data.user.token);
         localStorage.setItem('id', response.data.user.id);
@@ -49,7 +49,6 @@ function Login() {
           </div>
 
           <h1>Welcome Back!</h1>
-          {error && <p className="error">{error}</p>}
 
           <div className="form-field">
             <label htmlFor="email">Email*</label>
@@ -84,9 +83,11 @@ function Login() {
           </div>
 
           <div className="apply">
+          {error && <p className="error">{error}</p>}
             <p>Do you want to join our company?</p>
             <p>Click Here</p>
           </div>
+          
 
         </div>
 
