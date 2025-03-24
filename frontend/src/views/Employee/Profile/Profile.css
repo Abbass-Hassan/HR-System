@@ -1,0 +1,178 @@
+/* :root {
+  --sidebar-width: 260px;
+  --primary-color: #008080;
+  --text-color: #4c5257;
+  --icon-color: #666;
+  --bullet-color: #008080;
+  --active-text-color: #fff;
+} */
+
+.employee-profile-page {
+  padding: 0px 24px;
+  background-color: #f9fafb;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.employee-profile {
+  height: 100vh;
+  width: 100%;
+}
+.inside-container {
+  margin: 0 auto;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #eee;
+  /* margin-top: -15px; */
+}
+
+.profile-employee-name {
+  font-size: 24px;
+  margin-top: -5px;
+  margin-bottom: 25px;
+}
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+.two-form-inputs {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 5%;
+  margin-bottom: 25px;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 420px;
+}
+.form-input label {
+  font-weight: bold;
+}
+
+.form-input-icon {
+  position: relative;
+  width: 100%;
+}
+.form-input input {
+  padding: 10px 1em 10px 2.4em;
+  background-color: #f5f5f5;
+  border: 1px solid #b1abab;
+  border-radius: 5px;
+  width: 100%;
+  min-width: fit-content;
+  height: 50px;
+  font-size: 18px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+.form-input input:focus {
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 1px rgba(0, 128, 128, 0.5);
+}
+.form-input img {
+  width: 24px;
+  position: absolute;
+  left: 0.7em;
+  top: 0.7em;
+}
+
+.change-password-container {
+  align-self: flex-start;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  align-self: center;
+  width: 60px;
+  margin-top: 3px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.button-submit-profile {
+  margin-top: 15px;
+  width: 120px;
+  height: 40px;
+  border-radius: 10px;
+  align-self: flex-start;
+}
+
+@media all and (max-width: 1090px) {
+  .two-form-inputs {
+    flex-direction: column;
+    gap: 25px;
+  }
+}
