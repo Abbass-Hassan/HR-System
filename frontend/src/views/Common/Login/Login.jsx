@@ -48,7 +48,7 @@ function Login() {
             <h3 className="logo_title">Crewmate</h3>
           </div>
 
-          <h1>Welcome Back!</h1>
+          <h1 className="login-h1">Welcome Back!</h1>
 
           <div className="form-field">
             <label htmlFor="email">Email*</label>
@@ -74,18 +74,18 @@ function Login() {
             />
 
             <div className="forgot-password">
-              <p>Forgot Password?</p>
+              <p className="login-p">Forgot Password?</p>
             </div>
           </div>
 
-          <div className="login-btn">
-            <button type="submit">Login</button>
+          <div className="login-btn2">
+            <button className="login-btn" type="submit">Login</button>
           </div>
 
           <div className="apply">
           {error && <p className="error">{error}</p>}
-            <p>Do you want to join our company?</p>
-            <p>Click Here</p>
+            <p className="login-p">Do you want to join our company?</p>
+            <p className="login-p">Click Here</p>
           </div>
           
 

@@ -38,7 +38,7 @@
     align-items: center;
 }
 
-h3{
+.logo_title{
     color: #008080;
     margin-left:5px;
 }
@@ -93,13 +93,13 @@ h3{
     padding:0%;
 }
 
-.login-btn{
+.login-btn2{
     display: flex;
     justify-content: center;
 }
   
 
-button{
+.login-btn{
     width: 35%;
     background-color: #008080;
     color: white;
@@ -113,7 +113,7 @@ button{
     transition: background-color 0.3s;
 }
 
-button:hover{
+.login-btn :hover{
     background-color:#004d4d;
 }
 
@@ -126,7 +126,7 @@ button:hover{
     margin-top: 30px;
 }
 
-p{
+.login-p{
     margin:0;
     padding:0;
 }
@@ -136,7 +136,7 @@ p{
 }
 
 @media only screen and (max-width: 1230px) {
-p{
+    .login-p{
     font-size: 15px;
 }
 .login-logo img {
@@ -144,18 +144,18 @@ p{
     height: auto;
   }
 
-h3{
+.logo_title{
     font-size: 1em;
 }
 
-h1{
+.login-h1{
     font-size: 1.8em;
 }
     
 }
 
 @media only screen and (max-width: 1120px) {
-    p{
+    .login-p{
         font-size: 14px;
     }
     .login-logo img {
@@ -163,22 +163,22 @@ h1{
         height: auto;
       }
     
-    h3{
+    .logo_title{
         font-size: 0.9em;
     }
     
-    h1{
+    .login-h1{
         font-size: 1.5em;
     }
 
-    button{
+    .login-btn{
         width:33%;
     }
         
     }
 
     @media only screen and (max-width: 1025px) {
-        p{
+        .login-p{
             font-size: 13px;
         }
         .login-logo img {
@@ -186,18 +186,18 @@ h1{
             height: auto;
           }
         
-        h3{
+        .logo_title{
             font-size: 0.8em;
         }
         
-        h1{
+        .login-h1{
             font-size: 1.3em;
         }
             
     }
 
     @media only screen and (max-width: 980px) {
-        p{
+        .login-p{
             font-size: 13px;
         }
         .login-logo img {
@@ -205,21 +205,22 @@ h1{
             height: auto;
           }
         
-        h3{
+        .logo_title{
             font-size: 0.8em;
         }
         
-        h1{
+        .login-h1{
             font-size: 1.1em;
         }
     
-        button{
+        .login-btn
+        {
             width:31%;
         }
             
         }
     @media only screen and (max-width: 937px) {
-        p{
+        .login-p{
             font-size: 12px;
         }
         .login-logo img {
@@ -227,15 +228,15 @@ h1{
             height: auto;
         }
             
-        h3{
+        .logo_title{
             font-size: 0.8em;
         }
             
-        h1{
+        .login-h1{
             font-size: 0.9em;
         }
         
-        button{
+        .login-btn{
             width:29%;
         }
         }
