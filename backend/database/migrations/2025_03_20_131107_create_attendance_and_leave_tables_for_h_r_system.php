@@ -11,8 +11,8 @@ class CreateAttendanceAndLeaveTablesForHRSystem extends Migration
     {
         // Attendance Table
         Schema::create('attendances', function (Blueprint $table) {
-            $table->id('attendance_id');
-            $table->foreignId('user_id')->constrained('users', 'user_id');
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->date('date');
             $table->timestamp('clock_in')->nullable();
             $table->timestamp('clock_out')->nullable();
@@ -20,20 +20,40 @@ class CreateAttendanceAndLeaveTablesForHRSystem extends Migration
             $table->string('location_status')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('user_id');
+            $table->index('date');
+            $table->index('status');
+
         });
 
         // Leave Requests Table
         Schema::create('leave_requests', function (Blueprint $table) {
-            $table->id('request_id');
-            $table->foreignId('user_id')->constrained('users', 'user_id');
-            $table->foreignId('approver_id')->nullable()->constrained('users', 'user_id');
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('approver_id')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('leave_type', ['vacation', 'sick', 'personal', 'maternity', 'paternity', 'bereavement', 'other']);
             $table->date('start_date');
             $table->date('end_date');
+            $table->decimal('total_days', 5, 1);
+            $table->decimal('balance', 5, 1)->default(14.0);
+            $table->date('requested_date');
             $table->enum('status', ['pending', 'approved', 'rejected', 'cancelled']);
             $table->text('reason')->nullable();
-            $table->date('approved_date')->nullable();
+            $table->text('rejection_reason')->nullable();
+            $table->date('approval_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            
+            // Indexes
+            $table->index('user_id');
+            $table->index('approver_id');
+            $table->index('leave_type');
+            $table->index('start_date');
+            $table->index('end_date');
+            $table->index('status');
+            $table->index('balance');
         });
     }
 

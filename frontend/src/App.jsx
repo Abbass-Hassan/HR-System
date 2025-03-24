@@ -8,9 +8,11 @@ import HRDashboardPage from "./views/HR/Dashboard/Dashboard";
 import HRAttendancePage from "./views/HR/Attendance/Attendance";
 import HRPendingDocs from "./views/HR/PendingDocuments/PendingDocuments";
 import HRApprovedDocs from "./views/HR/ApprovedDocuments/ApprovedDocuments";
+import LeaveManagement from './views/HR/LeaveManagement/LeaveManagement';
 
 // Employee Pages
 import EmployeeDashboardPage from "./views/Employee/Dashboard/Dashboard";
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route path="/hr/attendance" element={<HRLayout><HRAttendancePage /></HRLayout>} />
         <Route path="/hr/pending-docs" element={<HRLayout><HRPendingDocs /></HRLayout>} />
         <Route path="/hr/approved-docs" element={<HRLayout><HRApprovedDocs /></HRLayout>} />
+        <Route path="/hr/leave-management" element={<HRLayout><LeaveManagement /></HRLayout>} />
         
         {/* Employee Routes */}
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />

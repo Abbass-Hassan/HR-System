@@ -1,0 +1,99 @@
+:root {
+    --primary-color: #008080;
+    --primary-light: #96C1C1;
+    --neutral-gray: #DBDBDB;
+    --white: #FFFFFF;
+    --light-red: #FDF4F4;
+    --text-dark: #111827;
+    --text-medium: #374151;
+    --text-light: #6B7280;
+  }
+  
+  .page {
+    padding: 1.5rem;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .title-area {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--text-light);
+  }
+  
+  .breadcrumbs .separator {
+    margin: 0 0.5rem;
+  }
+  
+  .breadcrumbs .active {
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+  
+  .page-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .top-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .search-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .view-all-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .view-all-button:hover {
+    background-color: #006666;
+  }
+  
+  .stats-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .employee-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
