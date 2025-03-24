@@ -12,6 +12,15 @@ import LeaveManagement from './views/HR/LeaveManagement/LeaveManagement';
 
 // Employee Pages
 import EmployeeDashboardPage from "./views/Employee/Dashboard/Dashboard";
+import EmployeeDocumentsPage from "./views/Employee/Documents/Documents";
+import AddFilePage from "./views/Employee/AddFile/AddFile";
+import EmployeeProfilePage from "./views/Employee/Profile/Profile";
+import EmployeePayslipPage from './views/Employee/Payslip/Payslip'
+
+// Common Pages
+import Login from "./views/Common/Login/login";
+
+
 
 
 function App() {
@@ -27,7 +36,13 @@ function App() {
         
         {/* Employee Routes */}
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />
-        
+        <Route path="/employee/documents" element={<EmployeeLayout><EmployeeDocumentsPage /></EmployeeLayout>} />
+        <Route path="/employee/documents/add" element={<EmployeeLayout><AddFilePage /></EmployeeLayout>} />
+        <Route path="/employee/profile" element={<EmployeeLayout><EmployeeProfilePage /></EmployeeLayout>} />
+        <Route path="/employee/payslip" element={<EmployeeLayout><EmployeePayslipPage /></EmployeeLayout>} />
+
+        {/* Common Routes */}
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );
