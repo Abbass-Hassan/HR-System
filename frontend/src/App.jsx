@@ -33,6 +33,7 @@ function App() {
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />
         <Route path="/employee/documents" element={<EmployeeLayout><EmployeeDocumentsPage /></EmployeeLayout>} />
         <Route path="/employee/documents/add" element={<EmployeeLayout><AddFilePage /></EmployeeLayout>} />
+        <Route path="/employee/profile" element={<EmployeeLayout><EmployeeProfilePage /></EmployeeLayout>} />
         
         {/* Common Routes */}
         <Route path="/" element={<Login />} />
