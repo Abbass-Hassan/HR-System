@@ -50,7 +50,7 @@ class CreateCoreTablesForHRSystem extends Migration
             $table->string('last_name');
             $table->string('phone_number')->nullable();
             $table->enum('status', ['active', 'inactive', 'on_leave', 'terminated']);
-            $table->enum('account_type', ['employee', 'hr']);
+            $table->enum('account_type', ['employee', 'hr', 'manager']);
             $table->string('employee_number')->nullable()->unique();
             $table->date('hire_date')->nullable();
             $table->date('termination_date')->nullable();
