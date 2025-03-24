@@ -13,6 +13,7 @@ import HRApprovedDocs from "./views/HR/ApprovedDocuments/ApprovedDocuments";
 import EmployeeDashboardPage from "./views/Employee/Dashboard/Dashboard";
 import EmployeeDocumentsPage from "./views/Employee/Documents/Documents";
 import AddFilePage from "./views/Employee/AddFile/AddFile";
+import EmployeeProfilePage from "./views/Employee/Profile/Profile";
 
 // Common Pages
 import Login from "./views/Common/Login/login";
