@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { FaUsersLine } from "react-icons/fa6";
 import { FiUserPlus, FiChevronDown, FiChevronUp } from "react-icons/fi";
@@ -12,13 +13,33 @@ import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
 import "./Sidebar.css";
 
 function Sidebar() {
-  const [activeParent, setActiveParent] = useState("dashboard");
-  const [activeSubItem, setActiveSubItem] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  
+  // Set initial active states based on current path
+  const initializeActive = () => {
+    if (currentPath === "/hr") {
+      return { parent: "dashboard", subItem: "" };
+    } else if (currentPath === "/hr/attendance") {
+      return { parent: "employee", subItem: "attendance" };
+    } else if (currentPath === "/hr/pending-docs") {
+      return { parent: "documents", subItem: "pending" };
+    } else if (currentPath === "/hr/approved-docs") {
+      return { parent: "documents", subItem: "approved" };
+    }
+    return { parent: "dashboard", subItem: "" };
+  };
 
-  const [isEmployeeOpen, setEmployeeOpen] = useState(false);
-  const [isRecruitmentOpen, setRecruitmentOpen] = useState(false);
-  const [isPayrollOpen, setPayrollOpen] = useState(false);
-  const [isDocumentsOpen, setDocumentsOpen] = useState(false); 
+  const initial = initializeActive();
+  const [activeParent, setActiveParent] = useState(initial.parent);
+  const [activeSubItem, setActiveSubItem] = useState(initial.subItem);
+
+  const [isEmployeeOpen, setEmployeeOpen] = useState(activeParent === "employee");
+  const [isRecruitmentOpen, setRecruitmentOpen] = useState(activeParent === "recruitment");
+  const [isPayrollOpen, setPayrollOpen] = useState(activeParent === "payroll");
+  const [isDocumentsOpen, setDocumentsOpen] = useState(activeParent === "documents");
+
   const handleParentClick = (parentId) => {
     if (parentId === "employee") {
       setEmployeeOpen(!isEmployeeOpen);
@@ -28,6 +49,7 @@ function Sidebar() {
       setActiveParent("employee");
       if (!isEmployeeOpen) {
         setActiveSubItem("attendance");
+        navigate("/hr/attendance");
       }
     } else if (parentId === "recruitment") {
       setRecruitmentOpen(!isRecruitmentOpen);
@@ -55,7 +77,16 @@ function Sidebar() {
       setActiveParent("documents");
       if (!isDocumentsOpen) {
         setActiveSubItem("pending");
+        navigate("/hr/pending-docs");
       }
+    } else if (parentId === "dashboard") {
+      setEmployeeOpen(false);
+      setRecruitmentOpen(false);
+      setPayrollOpen(false);
+      setDocumentsOpen(false);
+      setActiveParent(parentId);
+      setActiveSubItem("");
+      navigate("/hr");
     } else {
       setEmployeeOpen(false);
       setRecruitmentOpen(false);
@@ -69,6 +100,15 @@ function Sidebar() {
   const handleSubItemClick = (parentId, subId) => {
     setActiveParent(parentId);
     setActiveSubItem(subId);
+    
+    // Handle navigation based on subitem
+    if (parentId === "employee" && subId === "attendance") {
+      navigate("/hr/attendance");
+    } else if (parentId === "documents" && subId === "pending") {
+      navigate("/hr/pending-docs");
+    } else if (parentId === "documents" && subId === "approved") {
+      navigate("/hr/approved-docs");
+    }
   };
 
   return (

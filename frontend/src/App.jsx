@@ -18,7 +18,7 @@ import EmployeeProfilePage from "./views/Employee/Profile/Profile";
 import EmployeePayslipPage from './views/Employee/Payslip/Payslip'
 
 // Common Pages
-import Login from "./views/Common/Login/login";
+import Login from "./views/Common/Login/Login";
 
 
 
