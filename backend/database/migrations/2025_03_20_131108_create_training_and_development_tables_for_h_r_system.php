@@ -142,7 +142,7 @@ class CreateTrainingAndDevelopmentTablesForHRSystem extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('certification_id')->constrained('certifications')->onDelete('restrict');
-            $table->foreignId('document_id')->nullable()->constrained('user_documents')->onDelete('set null');
+            $table->foreignId('document_id')->nullable()->constrained('documents')->onDelete('set null');
             $table->date('issue_date');
             $table->date('expiry_date')->nullable();
             $table->string('certificate_number')->nullable();
