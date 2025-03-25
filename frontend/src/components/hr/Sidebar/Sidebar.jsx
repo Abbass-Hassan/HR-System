@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { FaUsersLine } from "react-icons/fa6";
-import { FiUserPlus, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiUserPlus, FiChevronDown, FiChevronUp, FiClock } from "react-icons/fi";
 import { MdOutlinePayments } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { IoMdHelpCircleOutline } from "react-icons/io";
@@ -12,15 +13,52 @@ import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
 import "./Sidebar.css";
 
 function Sidebar() {
-  const [activeParent, setActiveParent] = useState("dashboard");
-  const [activeSubItem, setActiveSubItem] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  
+  // Set initial active states based on current path
+  const initializeActive = () => {
+    if (currentPath === "/hr") {
+      return { parent: "dashboard", subItem: "" };
+    } else if (currentPath === "/hr/attendance") {
+      return { parent: "employee", subItem: "attendance" };
+    } else if (currentPath === "/hr/clock") {
+      return { parent: "clock", subItem: "" };
+    } else if (currentPath === "/hr/pending-docs") {
+      return { parent: "documents", subItem: "pending" };
+    } else if (currentPath === "/hr/approved-docs") {
+      return { parent: "documents", subItem: "approved" };
+    }
+    return { parent: "dashboard", subItem: "" };
+  };
 
-  const [isEmployeeOpen, setEmployeeOpen] = useState(false);
-  const [isRecruitmentOpen, setRecruitmentOpen] = useState(false);
-  const [isPayrollOpen, setPayrollOpen] = useState(false);
-  const [isDocumentsOpen, setDocumentsOpen] = useState(false); 
+  const initial = initializeActive();
+  const [activeParent, setActiveParent] = useState(initial.parent);
+  const [activeSubItem, setActiveSubItem] = useState(initial.subItem);
+
+  const [isEmployeeOpen, setEmployeeOpen] = useState(activeParent === "employee");
+  const [isRecruitmentOpen, setRecruitmentOpen] = useState(activeParent === "recruitment");
+  const [isPayrollOpen, setPayrollOpen] = useState(activeParent === "payroll");
+  const [isDocumentsOpen, setDocumentsOpen] = useState(activeParent === "documents");
+
   const handleParentClick = (parentId) => {
-    if (parentId === "employee") {
+    if (parentId === "logout") {
+      // Activate logout functionality
+      localStorage.removeItem("token");
+      navigate("/");
+      return;
+    }
+    if (parentId === "clock") {
+      // Handle navigation for clock page
+      setEmployeeOpen(false);
+      setRecruitmentOpen(false);
+      setPayrollOpen(false);
+      setDocumentsOpen(false);
+      setActiveParent("clock");
+      setActiveSubItem("");
+      navigate("/hr/clock");
+    } else if (parentId === "employee") {
       setEmployeeOpen(!isEmployeeOpen);
       setRecruitmentOpen(false);
       setPayrollOpen(false);
@@ -28,6 +66,7 @@ function Sidebar() {
       setActiveParent("employee");
       if (!isEmployeeOpen) {
         setActiveSubItem("attendance");
+        navigate("/hr/attendance");
       }
     } else if (parentId === "recruitment") {
       setRecruitmentOpen(!isRecruitmentOpen);
@@ -55,7 +94,16 @@ function Sidebar() {
       setActiveParent("documents");
       if (!isDocumentsOpen) {
         setActiveSubItem("pending");
+        navigate("/hr/pending-docs");
       }
+    } else if (parentId === "dashboard") {
+      setEmployeeOpen(false);
+      setRecruitmentOpen(false);
+      setPayrollOpen(false);
+      setDocumentsOpen(false);
+      setActiveParent("dashboard");
+      setActiveSubItem("");
+      navigate("/hr");
     } else {
       setEmployeeOpen(false);
       setRecruitmentOpen(false);
@@ -69,6 +117,23 @@ function Sidebar() {
   const handleSubItemClick = (parentId, subId) => {
     setActiveParent(parentId);
     setActiveSubItem(subId);
+    
+    // Handle navigation based on subitem
+    if (parentId === "employee" && subId === "attendance") {
+      navigate("/hr/attendance");
+    } else if (parentId === "documents" && subId === "pending") {
+      navigate("/hr/pending-docs");
+    } else if (parentId === "documents" && subId === "approved") {
+      navigate("/hr/approved-docs");
+    } else if (parentId === "recruitment" && subId === "candidates") {
+      // add navigation for candidates if needed
+    } else if (parentId === "recruitment" && subId === "interviews") {
+      // add navigation for interviews if needed
+    } else if (parentId === "payroll" && subId === "payslips") {
+      // add navigation for payslips if needed
+    } else if (parentId === "payroll" && subId === "bonuses") {
+      // add navigation for bonuses if needed
+    }
   };
 
   return (
@@ -92,6 +157,22 @@ function Sidebar() {
             >
               <RxDashboard className="sidebar__icon" />
               <span>Dashboard</span>
+            </button>
+          </li>
+          
+          {/* New Clock In/Out Item */}
+          <li>
+            <button
+              type="button"
+              className={
+                activeParent === "clock"
+                  ? "sidebar__link sidebar__link--active"
+                  : "sidebar__link"
+              }
+              onClick={() => handleParentClick("clock")}
+            >
+              <FiClock className="sidebar__icon" />
+              <span>Clock In/Out</span>
             </button>
           </li>
 
@@ -211,8 +292,7 @@ function Sidebar() {
                   <button
                     type="button"
                     className={
-                      activeSubItem === "candidates" &&
-                      activeParent === "recruitment"
+                      activeSubItem === "candidates" && activeParent === "recruitment"
                         ? "sidebar__sublink sidebar__sublink--active"
                         : "sidebar__sublink"
                     }
@@ -226,8 +306,7 @@ function Sidebar() {
                   <button
                     type="button"
                     className={
-                      activeSubItem === "interviews" &&
-                      activeParent === "recruitment"
+                      activeSubItem === "interviews" && activeParent === "recruitment"
                         ? "sidebar__sublink sidebar__sublink--active"
                         : "sidebar__sublink"
                     }
@@ -240,6 +319,7 @@ function Sidebar() {
               </ul>
             )}
           </li>
+          
           <li>
             <button
               type="button"
@@ -287,6 +367,7 @@ function Sidebar() {
               </ul>
             )}
           </li>
+          
           <li>
             <button
               type="button"
@@ -301,6 +382,7 @@ function Sidebar() {
               <span>Reports and Analytics</span>
             </button>
           </li>
+          
           <li className="sidebar__bottom-section">
             <button
               type="button"

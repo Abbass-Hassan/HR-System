@@ -29,7 +29,23 @@ class User extends Authenticatable implements JWTSubject{
     }
 
     public function getJWTCustomClaims(){
-        return [];
+        return [
+        'id'=> $this->id,
+        'email' => $this->email,
+        'account_type' => $this->account_type,
+        "department_id"=> $this->department_id,
+        "position_id"=> $this->position_id,
+        "manager_id"=> $this->manager_id,
+        "first_name"=> $this->first_name,
+        "last_name"=> $this->last_name,
+        "phone_number"=> $this->phone_number,
+        "status"=> $this->status,
+        "employee_number"=>$this->employee_number,
+        "hire_date"=> $this->hire_date,
+        "termination_date"=> $this->termination_date,
+        "created_by"=> $this->created_by,
+        "updated_by"=> $this->updated_by,
+        ];
     }
 
     public function userdetail(){
@@ -57,4 +73,20 @@ class User extends Authenticatable implements JWTSubject{
         return $this->hasMany(UserCertification::class);
     }
 
+    /**
+     * Get the attendances for the user.
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * Get today's attendance record for the user.
+     */
+    public function todayAttendance()
+    {
+        return $this->hasOne(Attendance::class)
+            ->whereDate('date', now()->toDateString());
+    }
 }
