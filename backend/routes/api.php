@@ -7,6 +7,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentApprovalController;
+use Illuminate\Support\Facades\Storage;
 
 Route::group(["prefix" => "v0.1"], function(){
     //Authenticated Routes
@@ -21,6 +22,8 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::get('/documents/statistics', [DocumentApprovalController::class, 'statistics']);
             Route::post('/documents/{id}/approve', [DocumentApprovalController::class, 'approve']);
             Route::post('/documents/{id}/reject', [DocumentApprovalController::class, 'reject']);
+
+            Route::delete('/documents/{id}', [DocumentApprovalController::class, 'destroy']);
         });
 
         // Attendance routes (accessible to all authenticated users)
