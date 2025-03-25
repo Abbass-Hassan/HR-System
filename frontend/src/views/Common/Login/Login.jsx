@@ -4,15 +4,18 @@ import "./Login.css";
 import api from '../../../services/Api';
 import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
 import OfficePhoto from "../../../assets/images/officePhoto2.png";
+import { useToast } from "../../../context/Toast/Toast";
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const onLoginSuccess = () => {
     const accountType = localStorage.getItem('account_type');
+      showToast('Success', 'Login Successfully')
     if (accountType === 'hr') {
       navigate('/hr');
     } else {
@@ -36,6 +39,7 @@ function Login() {
     } catch (err) {
       console.error(err);
       setError('An error occurred. Please try again.');
+      showToast('Error', 'Email or Password not correct')
     }
   };
 
