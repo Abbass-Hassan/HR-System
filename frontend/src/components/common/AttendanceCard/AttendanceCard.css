@@ -1,0 +1,88 @@
+.attendance-card {
+    min-width: 300px;
+  }
+  
+  .attendance-title {
+    color: #317773;
+    margin-bottom: 16px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid #317773;
+    padding-bottom: 8px;
+  }
+  
+  .status-info {
+    margin-bottom: 20px;
+  }
+  
+  .status-text {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  
+  .status-text.present {
+    color: #28a745;
+  }
+  
+  .status-text.late {
+    color: #ffc107;
+  }
+  
+  .status-text.absent {
+    color: #dc3545;
+  }
+  
+  .attendance-buttons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .clock-in-btn,
+  .clock-out-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .clock-in-btn {
+    background-color: #317773;
+    color: white;
+  }
+  
+  .clock-in-btn:hover {
+    background-color: #266663;
+  }
+  
+  .clock-out-btn {
+    background-color: #e27d60;
+    color: white;
+  }
+  
+  .clock-out-btn:hover {
+    background-color: #d16a4d;
+  }
+  
+  .message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .message.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .error-text {
+    color: #dc3545;
+  }
+  
