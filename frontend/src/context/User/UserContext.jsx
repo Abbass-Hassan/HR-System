@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react'
 import { jwtDecode } from 'jwt-decode'
+import api from '../../services/Api'
 
 export const UserContext = createContext()
 
@@ -9,11 +10,20 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (token) {
-      setUser(jwtDecode(token))
+      fetchUser()
     } else {
       setUser(null)
     }
-  }, [token])
+  }, [])
+
+  const fetchUser = async () => {
+    try {
+      const response = await api.get('api/v0.1/profile')
+      setUser(response.data.user)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <UserContext.Provider value={{ user, setUser, token, setToken }}>
