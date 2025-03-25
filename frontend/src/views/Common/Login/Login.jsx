@@ -5,6 +5,8 @@ import api from '../../../services/Api';
 import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
 import OfficePhoto from "../../../assets/images/officePhoto2.png";
 import { useToast } from "../../../context/Toast/Toast";
+import { jwtDecode } from 'jwt-decode'
+import { useUser } from "../../../context/User/useUser";
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -12,27 +14,30 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { setToken } = useUser();
 
-  const onLoginSuccess = () => {
-    const accountType = localStorage.getItem('account_type');
-      showToast('Success', 'Login Successfully')
+  const onLoginSuccess = (accountType) => {
+    showToast('Success', 'Login Successfully')
     if (accountType === 'hr') {
-      navigate('/hr');
+      navigate('/hr')
     } else {
-      navigate('/employee');
+      navigate('/employee')
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await api.post('api/v0.1/guest/login', { email, password });
       if (response.data.success) {
-        localStorage.setItem('token', response.data.user.token);
-        localStorage.setItem('id', response.data.user.id);
-        localStorage.setItem('fullname', `${response.data.user.first_name} ${response.data.user.last_name}`);
-        localStorage.setItem('account_type', response.data.user.account_type);
-        onLoginSuccess();
+        const token = response.data.user.token;
+        localStorage.setItem('token', token)
+        setToken(token);
+        // localStorage.setItem('id', response.data.user.id);
+        // localStorage.setItem('fullname', `${response.data.user.first_name} ${response.data.user.last_name}`);
+        // localStorage.setItem('account_type', response.data.user.account_type);
+        console.log(jwtDecode(token))
+        onLoginSuccess(jwtDecode(token).account_type);
       } else {
         setError(response.data.error);
       }
