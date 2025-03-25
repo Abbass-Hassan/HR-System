@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './Attendance.css';
 import AttendanceSummaryCard from '../../../components/hr/AttendanceSummaryCard/AttendanceSummaryCard';
 import SearchBar from '../../../components/common/SearchBar/SearchBar';
-import FilterButton from '../../../components/common/FilterButton/FilterButton';
-import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import AttendanceTable from '../../../components/hr/AttendanceTable/AttendanceTable';
 import axios from 'axios';
 
@@ -16,7 +14,7 @@ const Attendance = () => {
     { id: 1, title: 'Present Workforce', count: 0, icon: 'office-chair' },
     { id: 2, title: 'Absent Workforce', count: 0, icon: 'alert-diamond' },
     { id: 3, title: 'Late arrivals', count: 0, icon: 'alarm-clock' },
-    { id: 4, title: 'On leave', count: 0, icon: 'beach' }
+    // { id: 4, title: 'On leave', count: 0, icon: 'beach' }
   ]);
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -153,7 +151,7 @@ const Attendance = () => {
           { id: 1, title: 'Present Workforce', count: presentCount, icon: 'office-chair' },
           { id: 2, title: 'Absent Workforce', count: absentCount, icon: 'alert-diamond' },
           { id: 3, title: 'Late arrivals', count: lateCount, icon: 'alarm-clock' },
-          { id: 4, title: 'On leave', count: onLeaveCount, icon: 'beach' }
+          // { id: 4, title: 'On leave', count: onLeaveCount, icon: 'beach' }
         ];
         
         setSummaryData(newSummaryData);
@@ -181,20 +179,20 @@ const Attendance = () => {
     setSearchTerm(term);
   };
 
-  const handleFilter = () => {
-    console.log('Filter button clicked');
+  const handleDateChange = (e) => {
+    const newDate = new Date(e.target.value);
+    setSelectedDate(newDate);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const currentDate = selectedDate;
-  const formattedDate = currentDate.toLocaleDateString('en-GB', {
+  // Format date for display
+  const formattedDateDisplay = selectedDate.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'long',
     year: 'numeric'
   });
+
+  // Format date for input value (YYYY-MM-DD)
+  const dateInputValue = selectedDate.toISOString().split('T')[0];
 
   // Filter data based on search term
   const filteredData = searchTerm 
@@ -208,7 +206,7 @@ const Attendance = () => {
     <div className="attendance-container">
       <div className="attendance-header">
         <h1 className="attendance-title">Employee Attendance</h1>
-        <DateDisplay date={formattedDate} className="header-date" />
+        <div className="date-display">{formattedDateDisplay}</div>
       </div>
 
       <div className="summary-cards-container">
@@ -225,12 +223,14 @@ const Attendance = () => {
       <div className="table-controls-container">
         <SearchBar onSearch={handleSearch} />
         <div className="right-controls">
-          <FilterButton onClick={handleFilter} />
-          <DateDisplay 
-            date={formattedDate} 
-            isSelectable={true}
-            onDateChange={handleDateChange}
-          />
+          <div className="date-picker-container">
+            <input
+              type="date"
+              className="date-picker"
+              value={dateInputValue}
+              onChange={handleDateChange}
+            />
+          </div>
         </div>
       </div>
 
