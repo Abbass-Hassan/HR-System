@@ -1,18 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { HiOutlineDocument } from "react-icons/hi"; 
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
-
+import { CgProfile } from "react-icons/cg";
+import { FiClock } from "react-icons/fi"; // New icon for clock page
 import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
-
 import "./Sidebar.css";
 
 function Sidebar() {
-  const [activeItem, setActiveItem] = useState("dashboard");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPath = location.pathname;
 
-  const handleItemClick = (itemId) => {
-    setActiveItem(itemId);
+  const isActive = (path) => {
+    if (path === '/employee' && currentPath === '/employee') {
+      return true;
+    }
+    if (path !== '/employee' && currentPath.startsWith(path)) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleItemClick = (path) => {
+    navigate(path);
+  };
+
+  const handleLogout = () => {
+    // Activate logout functionality
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -21,48 +40,74 @@ function Sidebar() {
         <img src={CrewMateLogo} alt="Crewmate" className="sidebar__logo" />
         <h2 className="sidebar__title">Crewmate</h2>
       </div>
-
       <nav className="sidebar__nav">
         <ul className="sidebar__menu">
           <li>
             <button
               type="button"
               className={
-                activeItem === "dashboard"
+                isActive("/employee")
                   ? "sidebar__link sidebar__link--active"
                   : "sidebar__link"
               }
-              onClick={() => handleItemClick("dashboard")}
+              onClick={() => handleItemClick("/employee")}
             >
               <RxDashboard className="sidebar__icon" />
               <span>Dashboard</span>
             </button>
           </li>
-
           <li>
             <button
               type="button"
               className={
-                activeItem === "documents"
+                isActive("/employee/profile")
                   ? "sidebar__link sidebar__link--active"
                   : "sidebar__link"
               }
-              onClick={() => handleItemClick("documents")}
+              onClick={() => handleItemClick("/employee/profile")}
+            >
+              <CgProfile className="sidebar__icon" />
+              <span>Profile</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              className={
+                isActive("/employee/documents")
+                  ? "sidebar__link sidebar__link--active"
+                  : "sidebar__link"
+              }
+              onClick={() => handleItemClick("/employee/documents")}
             >
               <HiOutlineDocument className="sidebar__icon" />
               <span>Documents</span>
             </button>
           </li>
-          
+          {/* New Clock In/Out Menu Item */}
+          <li>
+            <button
+              type="button"
+              className={
+                isActive("/employee/clock")
+                  ? "sidebar__link sidebar__link--active"
+                  : "sidebar__link"
+              }
+              onClick={() => handleItemClick("/employee/clock")}
+            >
+              <FiClock className="sidebar__icon" />
+              <span>Clock In/Out</span>
+            </button>
+          </li>
           <li className="sidebar__bottom-section">
             <button
               type="button"
               className={
-                activeItem === "help"
+                isActive("/employee/help")
                   ? "sidebar__link sidebar__link--active"
                   : "sidebar__link"
               }
-              onClick={() => handleItemClick("help")}
+              onClick={() => handleItemClick("/employee/help")}
             >
               <IoMdHelpCircleOutline className="sidebar__icon" />
               <span>Help</span>
@@ -71,12 +116,8 @@ function Sidebar() {
           <li>
             <button
               type="button"
-              className={
-                activeItem === "logout"
-                  ? "sidebar__link sidebar__link--active"
-                  : "sidebar__link"
-              }
-              onClick={() => handleItemClick("logout")}
+              className="sidebar__link"
+              onClick={handleLogout}
             >
               <TbLogout2 className="sidebar__icon" />
               <span>Logout</span>

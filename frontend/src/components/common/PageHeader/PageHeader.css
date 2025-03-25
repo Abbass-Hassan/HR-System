@@ -1,0 +1,27 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+}
+
+.page-header-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.page-header-sublink {
+  color: #6b7280;
+}
+
+.page-header-subsublink {
+  color: #2b796f;
+  font-weight: 500;
+}
+
+.page-header-separator {
+  margin: 0 4px;
+  color: #9ca3af;
+}

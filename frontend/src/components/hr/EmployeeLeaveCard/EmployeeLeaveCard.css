@@ -1,0 +1,196 @@
+:root {
+    --primary-color: #008080;
+    --primary-light: #96C1C1;
+    --neutral-gray: #DBDBDB;
+    --white: #FFFFFF;
+    --light-red: #FDF4F4;
+    --text-dark: #111827;
+    --text-medium: #374151;
+    --text-light: #6B7280;
+  }
+  
+  .card {
+    background-color: var(--white);
+    border-radius: 0.75rem;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .employee-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 4.375rem;
+    height: 4.375rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.125rem solid var(--neutral-gray);
+  }
+  
+  .info-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .name-section,
+  .role-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .value {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .menu-container {
+    position: relative;
+  }
+  
+  .menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+  }
+  
+  .menu-button:hover {
+    background-color: var(--neutral-gray);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(0, 0, 0, 0.1), 0 0.125rem 0.25rem -0.0625rem rgba(0, 0, 0, 0.06);
+    z-index: 10;
+    min-width: 11.25rem;
+    overflow: hidden;
+  }
+  
+  .dropdown-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--text-medium);
+    transition: background-color 0.2s;
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: var(--neutral-gray);
+  }
+  
+  .dropdown-menu button.approve-action {
+    color: var(--primary-color);
+  }
+  
+  .dropdown-menu button.reject-action {
+    color: #DC2626;
+  }
+  
+  .time-off-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+  }
+  
+  .section-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-medium);
+    margin: 0;
+  }
+  
+  .time-off-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .detail-label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  
+  .data-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.5rem;
+    background-color: var(--neutral-gray);
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.375rem;
+  }
+  
+  .data-value {
+    font-size: 0.875rem;
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+  
+  /* .status-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  } */
+  
+  .status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+  }
+  
+  .status-approved {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+  }
+  
+  .status-rejected {
+    background-color: var(--light-red);
+    color: #B91C1C;
+  }
