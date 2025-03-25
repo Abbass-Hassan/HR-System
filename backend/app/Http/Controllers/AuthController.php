@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Laravel\Socialite\Facades\Socialite;
 
 
 class AuthController extends Controller
@@ -45,4 +46,34 @@ class AuthController extends Controller
             "success" => true
         ]);
     }
+
+    //Google Auth
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->stateless()->with(['approval_prompt' => 'force'])->redirect();
+    }
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            $user = User::where('email', $googleUser->email)->first();
+
+            if (!$user) {
+                return redirect('http://localhost:5173/auth/google/callback?error=error');
+
+            }
+
+            if (!$token = Auth::login($user)) {
+                return redirect('http://localhost:5173/auth/google/callback?error=error');
+            }
+            $user->token = $token;
+
+            return redirect("http://localhost:5173/auth/google/callback?token={$token}");
+
+        } catch (\Throwable $e) {
+            return redirect('http://localhost:5173/auth/google/callback?error=error');
+
+        }
+    }
+
 }

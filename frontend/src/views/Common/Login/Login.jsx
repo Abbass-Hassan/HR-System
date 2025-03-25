@@ -7,6 +7,7 @@ import OfficePhoto from "../../../assets/images/officePhoto2.png";
 import { useToast } from "../../../context/Toast/Toast";
 import { jwtDecode } from 'jwt-decode'
 import { useUser } from "../../../context/User/useUser";
+import GoogleLogo from "../../../assets/images/googleLogo.png"
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -47,6 +48,41 @@ function Login() {
       showToast('Error', 'Email or Password not correct')
     }
   };
+
+  const handleGoogleLogin = (e) => {
+    e.preventDefault()
+    const googleAuthURL = 'http://localhost:8000/api/v0.1/guest/auth/google'
+
+    const width = 500
+    const height = 600
+    const left = (window.innerWidth - width) / 2
+    const top = (window.innerHeight - height) / 2
+
+    const popup = window.open(
+      googleAuthURL,
+      'Google Login',
+      `width=${width},height=${height},top=${top},left=${left},resizable=no`
+    )
+
+    const handleMessage = (event) => {
+      if (event.origin !== window.location.origin) return
+
+      if (!event.data?.token) {
+        navigate('/', { state: { loginError: true } })
+        showToast('Error', 'You are not allowed to login')
+      } else if (event.data?.token) {
+        const token = event.data.token
+        localStorage.setItem('token', token)
+        setToken(token)
+        onLoginSuccess(jwtDecode(token).account_type)
+        showToast('Success', 'Login successfully')
+      }
+
+      popup.close()
+      window.removeEventListener('message', handleMessage)
+    }
+    window.addEventListener('message', handleMessage)
+  }
 
   return (
     <div className="login-form">
@@ -96,7 +132,16 @@ function Login() {
             <p className="login-p">Do you want to join our company?</p>
             <p className="login-p">Click Here</p>
           </div>
-          
+          <div
+            className='google-container'
+            onClick={(e) => handleGoogleLogin(e)}
+          >
+            <img
+              src={GoogleLogo}
+              alt='googleloge.png'
+            />
+            <p>Login using google</p>
+          </div>
 
         </div>
 

@@ -21,7 +21,7 @@ import EmployeeClockInOutPage from "./views/Employee/ClockInOutPage/ClockInOutPa
 
 // Common Pages
 import Login from "./views/Common/Login/Login";
-
+import GoogleAuth from "./components/common/GoogleAuth/GoogleAuth";
 
 
 
@@ -49,6 +49,8 @@ function App() {
 
         {/* Common Routes */}
         <Route path="/" element={<Login />} />
+        <Route path="/auth/google/callback" element={<GoogleAuth />} />
+
       </Routes>
     </Router>
   );
