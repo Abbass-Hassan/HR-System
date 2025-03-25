@@ -16,7 +16,7 @@ class EnrollmentController extends Controller
     {
         $count = $request->query('count', 10);
         $page = $request->query('page', 1);
-        $status = $request->qquery('status');
+        $status = $request->query('status');
 
         $user = Auth::user();
         $query = CourseEnrollment::with(['course'])->where('user_id', $user->id);

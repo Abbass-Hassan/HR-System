@@ -40,7 +40,7 @@ class CourseController extends Controller
 
     function search(Request $request){
         $query = $request->query('q');
-        $count = $request->query('count', 10);
+         $count = $request->query('count', 10);
         $page = $request->query('page', 1);
         
         $courses = Course::where('course_name', 'LIKE', "%{$query}%")

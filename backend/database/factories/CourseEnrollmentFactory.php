@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Course;
 use App\Models\CourseEnrollment;
 use App\Models\User;
-
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CourseEnrollment>
  */
