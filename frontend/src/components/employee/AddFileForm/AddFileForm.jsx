@@ -42,6 +42,11 @@ const AddFileForm = () => {
       return;
     }
     
+    if (!selectedCategory) {
+      setError('Please select a category');
+      return;
+    }
+    
     if (!uploadedFile) {
       setError('Please upload a file');
       return;
@@ -53,8 +58,9 @@ const AddFileForm = () => {
     try {
       // Create form data for file upload
       const formData = new FormData();
-      formData.append('title', `${selectedCategory}: ${title}`);
+      formData.append('title', title);
       formData.append('description', description);
+      formData.append('category', selectedCategory); // Send category as separate field
       formData.append('file', uploadedFile);
       
       // Get the token from localStorage
