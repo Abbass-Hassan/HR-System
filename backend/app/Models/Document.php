@@ -19,6 +19,7 @@ class Document extends Model
         'user_id',
         'title',
         'description',
+        'category',
         'file_path',
         'file_type',
         'file_size',

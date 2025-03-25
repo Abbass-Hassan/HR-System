@@ -37,6 +37,7 @@ class DocumentController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category' => 'required|string|max:50',  // Add validation for category
             'file' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10240', // 10MB max
         ]);
 
@@ -59,6 +60,7 @@ class DocumentController extends Controller
             $document->user_id = Auth::id();
             $document->title = $request->title;
             $document->description = $request->description;
+            $document->category = $request->category;
             $document->file_path = $filePath;
             $document->file_type = $file->getClientMimeType();
             $document->file_size = $file->getSize();
