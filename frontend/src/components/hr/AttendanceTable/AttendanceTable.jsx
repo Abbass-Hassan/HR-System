@@ -3,7 +3,7 @@ import StatusBadge from '../../common/StatusBadge/StatusBadge';
 import './AttendanceTable.css';
 
 const AttendanceTable = ({ data, loading }) => {
-  // Show loading state if loading prop is true
+  // Show loading state
   if (loading) {
     return (
       <div className="attendance-table-container">
@@ -12,7 +12,7 @@ const AttendanceTable = ({ data, loading }) => {
     );
   }
 
-  // Show empty state if no data
+  // Show empty state
   if (!data || data.length === 0) {
     return (
       <div className="attendance-table-container">
