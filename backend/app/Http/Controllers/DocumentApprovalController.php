@@ -6,6 +6,7 @@ use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentApprovalController extends Controller
 {
@@ -129,5 +130,36 @@ class DocumentApprovalController extends Controller
             'success' => true,
             'statistics' => $stats
         ]);
+    }
+
+    /**
+     * Delete a document (admin access only).
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
+    {
+        $document = Document::findOrFail($id);
+        
+        try {
+            // Delete the actual file
+            if (Storage::disk('public')->exists($document->file_path)) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+            
+            // Permanently delete the record from the database
+            $document->forceDelete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Document permanently deleted'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete document: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
