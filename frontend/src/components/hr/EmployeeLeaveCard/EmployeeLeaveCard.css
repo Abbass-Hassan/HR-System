@@ -170,7 +170,7 @@
     font-weight: 500;
   }
   
-  .status-badge {
+  /* .status-badge {
     position: absolute;
     top: 0;
     right: 0;
@@ -178,7 +178,7 @@
     border-radius: 0.25rem;
     font-size: 0.75rem;
     font-weight: 500;
-  }
+  } */
   
   .status-pending {
     background-color: #FEF3C7;
