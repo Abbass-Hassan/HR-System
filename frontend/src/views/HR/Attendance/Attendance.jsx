@@ -95,7 +95,14 @@ const Attendance = () => {
   return (
     <div className="attendance-container">
       <div className="attendance-header">
-        <h1 className="attendance-title">Employee Attendance</h1>
+        <div>
+          <h1 className="attendance-title">Employee Attendance</h1>
+          <div className="attendance-subtitle">
+            <span className="hr-link">HR</span>
+            <span className="separator"> / </span>
+            <span className="attendance-link">Attendance</span>
+          </div>
+        </div>
         <DateDisplay date={formattedDate} className="header-date" />
       </div>
 
