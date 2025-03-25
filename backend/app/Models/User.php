@@ -48,4 +48,20 @@ class User extends Authenticatable implements JWTSubject{
         return $this->belongsTo(Position::class);
     }
 
+    /**
+     * Get the attendances for the user.
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * Get today's attendance record for the user.
+     */
+    public function todayAttendance()
+    {
+        return $this->hasOne(Attendance::class)
+            ->whereDate('date', now()->toDateString());
+    }
 }
