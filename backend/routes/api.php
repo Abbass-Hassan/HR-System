@@ -12,6 +12,7 @@ Route::group(["prefix" => "v0.1"], function(){
         //Admin Routes
         Route::group(["prefix" => "admin", "middleware" => "isAdmin"], function(){
             Route::get('/dashboard', [UserController::class, "getUsers"]);
+            Route::get('/attendance', [AttendanceController::class, 'getEmployeeAttendance']);
         });
         
         // Attendance routes (accessible to all authenticated users)

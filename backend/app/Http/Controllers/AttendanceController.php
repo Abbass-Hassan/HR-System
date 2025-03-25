@@ -158,4 +158,57 @@ class AttendanceController extends Controller
             'can_clock_out' => $canClockOut
         ]);
     }
+
+
+/**
+ * Get all employee attendance for a specific date (for HR)
+ * 
+ * @param Request $request
+ * @return \Illuminate\Http\JsonResponse
+ */
+public function getEmployeeAttendance(Request $request)
+{
+    // Verify that the user is an HR or admin
+    if (Auth::user()->account_type !== 'hr') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthorized access'
+        ], 403);
+    }
+    
+    // Get the date from request or use today
+    $date = $request->input('date', now()->toDateString());
+    
+    $attendances = Attendance::whereDate('date', $date)
+    ->with(['user:id,first_name,last_name,account_type,status,department_id,position_id,manager_id'])
+    ->get();
+    
+    // Count attendance by status
+    $presentCount = $attendances->where('status', 'present')->count();
+    $lateCount = $attendances->where('status', 'late')->count();
+    $absentCount = Attendance::whereDate('date', $date)
+        ->where('status', 'absent')
+        ->count();
+    
+    // Get all active users
+    $totalUsers = User::where('status', 'active')->count();
+    
+    // Count users on leave
+    $onLeaveCount = User::where('status', 'on_leave')->count();
+    
+    $summary = [
+        'present' => $presentCount,
+        'late' => $lateCount,
+        'absent' => $absentCount,
+        'on_leave' => $onLeaveCount,
+        'total' => $totalUsers
+    ];
+    
+    return response()->json([
+        'success' => true,
+        'attendances' => $attendances,
+        'summary' => $summary,
+        'date' => $date
+    ]);
+}
 }
