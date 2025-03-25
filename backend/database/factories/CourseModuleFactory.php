@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Course;
 use App\Models\CourseModule;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CourseModule>
  */
