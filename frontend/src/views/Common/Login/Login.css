@@ -112,9 +112,7 @@
     transition: background-color 0.3s;
 }
 
-button:hover{
-    background-color:#004d4d;
-}
+
 
 .apply{
     display: flex;
