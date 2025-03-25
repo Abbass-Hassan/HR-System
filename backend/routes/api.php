@@ -4,11 +4,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\UserController;
+<<<<<<< HEAD
 use App\Http\Controllers\Training\CourseController;
 use App\Http\Controllers\Training\EnrollmentController;
 use App\Http\Controllers\Training\ModuleController;
 use App\Http\Controllers\Training\AssessmentController;
 use App\Http\Controllers\Training\CertificationController;
+=======
+use App\Http\Controllers\AttendanceController;
+>>>>>>> de3618394c9dfc6668aeb403e2d94035b679ae2c
 
 Route::group(["prefix" => "v0.1"], function(){
     //Authenticated Routes
@@ -16,8 +20,10 @@ Route::group(["prefix" => "v0.1"], function(){
         //Admin Routes
         Route::group(["prefix" => "admin", "middleware" => "isAdmin"], function(){
             Route::get('/dashboard', [UserController::class, "getUsers"]);
+            Route::get('/attendance', [AttendanceController::class, 'getEmployeeAttendance']);
         });
 
+<<<<<<< HEAD
          //Training Routes
          Route::group(["prefix" => "training"], function(){
             // Course routes
@@ -45,6 +51,12 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::get('/certifications/{id}', [CertificationController::class, 'show']);
             Route::get('/certifications/available', [CertificationController::class, 'availableCertifications']);
         });
+=======
+        // Attendance routes (accessible to all authenticated users)
+        Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn']);
+        Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
+        Route::get('/attendance/status', [AttendanceController::class, 'getStatus']);
+>>>>>>> de3618394c9dfc6668aeb403e2d94035b679ae2c
     });
 
     //Unauthenticated routes
@@ -52,8 +64,13 @@ Route::group(["prefix" => "v0.1"], function(){
         Route::post('/login', [AuthController::class, "login"]);
         Route::post('/signup', [AuthController::class, "signup"]);
 
+<<<<<<< HEAD
          // Public training routes
          Route::get('/courses/featured', [CourseController::class, 'featured']);
          Route::get('/certifications/popular', [CertificationController::class, 'popular']);
+=======
+        Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
+        Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+>>>>>>> de3618394c9dfc6668aeb403e2d94035b679ae2c
     });
 });
