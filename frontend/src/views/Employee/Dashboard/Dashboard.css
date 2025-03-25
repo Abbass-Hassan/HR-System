@@ -1,0 +1,105 @@
+/* Attendance card styles */
+.attendance-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  
+  .attendance-title {
+    color: #317773;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .status-text {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  
+  .status-text.present {
+    color: #28a745;
+  }
+  
+  .status-text.late {
+    color: #ffc107;
+  }
+  
+  .status-text.absent {
+    color: #dc3545;
+  }
+  
+  /* Button styles */
+  .attendance-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .clock-in-btn, .clock-out-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .clock-in-btn {
+    background-color: #317773;
+    color: white;
+  }
+  
+  .clock-in-btn:hover {
+    background-color: #266663;
+  }
+  
+  .clock-out-btn {
+    background-color: #E27D60;
+    color: white;
+  }
+  
+  .clock-out-btn:hover {
+    background-color: #d16a4d;
+  }
+  
+  /* Message styles */
+  .message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .message.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  /* Time card styles */
+  .time-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .time-card h2 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .time-card h3 {
+    color: #317773;
+    font-size: 24px;
+    font-weight: 500;
+  }
