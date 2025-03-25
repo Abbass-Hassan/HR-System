@@ -48,4 +48,13 @@ class User extends Authenticatable implements JWTSubject{
         return $this->belongsTo(Position::class);
     }
 
+    //Training related relationships
+    public function courseEnrollments(){
+        return $this->hasMany(CourseEnrollment::class);
+    }
+
+    public function userCertifications(){
+        return $this->hasMany(UserCertification::class);
+    }
+
 }
