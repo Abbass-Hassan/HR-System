@@ -14,7 +14,7 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::get('/dashboard', [UserController::class, "getUsers"]);
             Route::get('/attendance', [AttendanceController::class, 'getEmployeeAttendance']);
         });
-        
+
         // Attendance routes (accessible to all authenticated users)
         Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn']);
         Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
@@ -25,5 +25,8 @@ Route::group(["prefix" => "v0.1"], function(){
     Route::group(["prefix" => "guest"], function(){
         Route::post('/login', [AuthController::class, "login"]);
         Route::post('/signup', [AuthController::class, "signup"]);
+
+        Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
+        Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
     });
 });
