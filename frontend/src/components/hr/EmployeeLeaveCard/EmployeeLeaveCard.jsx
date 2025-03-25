@@ -103,7 +103,7 @@ const EmployeeLeaveCard = ({ employee }) => {
           </div>
 
           {currentRequest.status && (
-            <div className={`status-badge status-${currentRequest.status.toLowerCase()}`}>
+            <div className={`status-icon status-${currentRequest.status.toLowerCase()}`}>
               <span>{currentRequest.status.charAt(0).toUpperCase() + currentRequest.status.slice(1)}</span>
             </div>
           )}
