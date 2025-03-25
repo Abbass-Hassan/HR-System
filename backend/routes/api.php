@@ -19,6 +19,11 @@ Route::group(["prefix" => "v0.1"], function(){
         Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn']);
         Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
         Route::get('/attendance/status', [AttendanceController::class, 'getStatus']);
+
+        //Employee
+        Route::post('/employee/editprofile/{change_password?}', [UserController::class, "employeeEditProfile"]);
+        Route::get("/profile", [UserController::class,"userProfile"]);
+
     });
 
     //Unauthenticated routes

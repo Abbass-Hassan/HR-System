@@ -5,20 +5,64 @@ import iconFirstName from '../../../assets/images/first_name.svg'
 import iconEmail from '../../../assets/images/email.svg'
 import iconPassword from '../../../assets/images/password.svg'
 import iconPhone from '../../../assets/images/phone.svg'
+import { useUser } from '../../../context/User/useUser'
+import api from '../../../services/Api'
+import { useToast } from '../../../context/Toast/Toast'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 const Profile = () => {
-  const [employee, setEmployee] = useState({
-    first_name: 'Rechard',
-    last_name: 'Hendricks',
-    phoneNb: '71 505 894',
-    email: 'rechard.hendricks@gmail.com',
-  })
+  const { user, setUser } = useUser()
+  const { showToast } = useToast()
+  const [employee, setEmployee] = useState({})
   const [changePassword, setChangePassword] = useState(false)
+  const [fullname, setFullName] = useState(
+    employee?.first_name + ' ' + employee?.last_name
+  )
+  useEffect(() => {
+    setEmployee({
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      phone_number: user?.phone_number || '',
+      email: user?.email,
+      password: user?.password,
+      confirm_password: user?.confirm_password,
+    })
+    setFullName(user?.first_name + ' ' + user?.last_name)
+  }, [user])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setEmployee((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleSubmitProfile = async (e) => {
     e.preventDefault()
-    console.log('handleSubmitProfile clicked')
+
+    if (employee.password !== employee.confirm_password) {
+      showToast('Error', 'Passwords do not match')
+      return
+    }
+
+    try {
+      const response = await api.post(
+        `/api/v0.1/employee/editprofile/${changePassword ? 'change' : ''}`,
+        employee
+      )
+      setUser({
+        ...user,
+        ...employee,
+        password: '',
+        confirm_password: '',
+      })
+
+      if (response.data.success) {
+        showToast('Success', response.data.message)
+      } else {
+        showToast('Error', 'Error updating profile')
+      }
+    } catch (error) {
+      showToast('Error', error.response.data.message)
+    }
   }
   return (
     <div className='employee-profile-page'>
@@ -35,7 +79,7 @@ const Profile = () => {
               src={profileImage}
               alt='profile-image.jpg'
             />
-            <div className='profile-employee-name'>{`${employee.first_name} ${employee.last_name}`}</div>
+            <div className='profile-employee-name'>{fullname}</div>
           </div>
           <form className='profile-form'>
             {/* row 2 inputs next to each other  */}
@@ -46,6 +90,8 @@ const Profile = () => {
                   <input
                     type='text'
                     value={employee.first_name}
+                    name='first_name'
+                    onChange={handleChange}
                   />
                   <img
                     className='input-icon'
@@ -60,6 +106,8 @@ const Profile = () => {
                   <input
                     type='text'
                     value={employee.last_name}
+                    name='last_name'
+                    onChange={handleChange}
                   />
                   <img
                     className='input-icon'
@@ -79,6 +127,8 @@ const Profile = () => {
                   <input
                     type='email'
                     value={employee.email}
+                    name='email'
+                    onChange={handleChange}
                   />
                   <img
                     className='input-icon'
@@ -92,7 +142,10 @@ const Profile = () => {
                 <div className='form-input-icon'>
                   <input
                     type='text'
-                    value={employee.phoneNb}
+                    value={employee.phone_number}
+                    name='phone_number'
+                    onChange={handleChange}
+                    placeholder={'N/A'}
                   />
                   <img
                     className='input-icon'
@@ -126,7 +179,10 @@ const Profile = () => {
                     <div className='form-input-icon'>
                       <input
                         type='password'
-                        value={'paswrod value'}
+                        value={employee.password}
+                        name='password'
+                        onChange={handleChange}
+                        placeholder='new password'
                       />
                       <img
                         className='input-icon'
@@ -140,7 +196,10 @@ const Profile = () => {
                     <div className='form-input-icon'>
                       <input
                         type='password'
-                        value={'Confirm Password value'}
+                        value={employee.confirm_password}
+                        name='confirm_password'
+                        onChange={handleChange}
+                        placeholder='confirm new password'
                       />
                       <img
                         className='input-icon'
