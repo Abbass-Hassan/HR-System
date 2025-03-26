@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f57b2f96ac1b6e8957411185e888cec",
+    "content-hash": "3b9aad824cd20e5ed34f8496ab915e53",
     "packages": [
         {
             "name": "brick/math",
@@ -2978,16 +2978,16 @@
         },
         {
             "name": "php-open-source-saver/jwt-auth",
-            "version": "2.8.0",
+            "version": "v2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-Open-Source-Saver/jwt-auth.git",
-                "reference": "1365f0cb902411ffdb34afbc858ea45bae0b9afc"
+                "reference": "9af3bd953b5671247c330562183e159f10700533"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-Open-Source-Saver/jwt-auth/zipball/1365f0cb902411ffdb34afbc858ea45bae0b9afc",
-                "reference": "1365f0cb902411ffdb34afbc858ea45bae0b9afc",
+                "url": "https://api.github.com/repos/PHP-Open-Source-Saver/jwt-auth/zipball/9af3bd953b5671247c330562183e159f10700533",
+                "reference": "9af3bd953b5671247c330562183e159f10700533",
                 "shasum": ""
             },
             "require": {
@@ -2996,7 +2996,7 @@
                 "illuminate/contracts": "^10|^11|^12",
                 "illuminate/http": "^10|^11|^12",
                 "illuminate/support": "^10|^11|^12",
-                "lcobucci/jwt": "^5.0",
+                "lcobucci/jwt": "^5.4",
                 "namshi/jose": "^7.0",
                 "nesbot/carbon": "^2.0|^3.0",
                 "php": "^8.2"
@@ -3070,7 +3070,7 @@
                 "issues": "https://github.com/PHP-Open-Source-Saver/jwt-auth/issues",
                 "source": "https://github.com/PHP-Open-Source-Saver/jwt-auth"
             },
-            "time": "2025-02-10T21:11:16+00:00"
+            "time": "2025-03-17T11:41:37+00:00"
         },
         {
             "name": "phpoption/phpoption",

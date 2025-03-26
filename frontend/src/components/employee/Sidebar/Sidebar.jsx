@@ -1,13 +1,18 @@
+// Sidebar.jsx (employee version)
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
-import { HiOutlineDocument } from "react-icons/hi"; 
+import { HiOutlineDocument } from "react-icons/hi";
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
-import { FiClock } from "react-icons/fi"; // New icon for clock page
+import { FiClock } from "react-icons/fi";
+import { BiCalendarEvent } from "react-icons/bi";
+import { GiBookshelf } from "react-icons/gi";
+import { FiAward } from "react-icons/fi";
 import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
 import "./Sidebar.css";
+
 
 function Sidebar() {
   const location = useLocation();
@@ -15,10 +20,10 @@ function Sidebar() {
   const currentPath = location.pathname;
 
   const isActive = (path) => {
-    if (path === '/employee' && currentPath === '/employee') {
+    if (path === "/employee" && currentPath === "/employee") {
       return true;
     }
-    if (path !== '/employee' && currentPath.startsWith(path)) {
+    if (path !== "/employee" && currentPath.startsWith(path)) {
       return true;
     }
     return false;
@@ -84,7 +89,6 @@ function Sidebar() {
               <span>Documents</span>
             </button>
           </li>
-          {/* New Clock In/Out Menu Item */}
           <li>
             <button
               type="button"
@@ -99,6 +103,20 @@ function Sidebar() {
               <span>Clock In/Out</span>
             </button>
           </li>
+          <li>
+            <button
+              type="button"
+              className={
+                isActive("/employee/leave")
+                  ? "sidebar__link sidebar__link--active"
+                  : "sidebar__link"
+              }
+              onClick={() => handleItemClick("/employee/leave")}
+            >
+              <BiCalendarEvent className="sidebar__icon" />
+              <span>Leave Requests</span>
+            </button>
+          </li>
           <li className="sidebar__bottom-section">
             <button
               type="button"
@@ -111,6 +129,37 @@ function Sidebar() {
             >
               <IoMdHelpCircleOutline className="sidebar__icon" />
               <span>Help</span>
+            </button>
+          </li>
+          // In Sidebar.jsx, add this to the menu items
+          <li>
+            <button
+              type="button"
+              className={
+                isActive("/employee/training")
+                  ? "sidebar__link sidebar__link--active"
+                  : "sidebar__link"
+              }
+              onClick={() => handleItemClick("/employee/training")}
+            >
+              <GiBookshelf className="sidebar__icon" />
+              <span>Training</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              className={
+                isActive("/employee/training/certifications")
+                  ? "sidebar__link sidebar__link--active"
+                  : "sidebar__link"
+              }
+              onClick={() =>
+                handleItemClick("/employee/training/certifications")
+              }
+            >
+              <FiAward className="sidebar__icon" />
+              <span>Certifications</span>
             </button>
           </li>
           <li>

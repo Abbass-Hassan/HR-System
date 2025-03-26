@@ -14,7 +14,6 @@ class User extends Authenticatable implements JWTSubject{
 
     protected $hidden = [
         'password',
-        'email',
         'remember_token',
     ];
 
@@ -39,6 +38,7 @@ class User extends Authenticatable implements JWTSubject{
         "first_name"=> $this->first_name,
         "last_name"=> $this->last_name,
         "phone_number"=> $this->phone_number,
+        "profile_image"=> $this->profile_image,
         "status"=> $this->status,
         "employee_number"=>$this->employee_number,
         "hire_date"=> $this->hire_date,
@@ -62,6 +62,17 @@ class User extends Authenticatable implements JWTSubject{
 
     public function position(){
         return $this->belongsTo(Position::class);
+    }
+
+  /**
+     * Get the enrolled cources and certificates
+     */
+    public function courseEnrollments(){
+        return $this->hasMany(CourseEnrollment::class);
+    }
+
+    public function userCertifications(){
+        return $this->hasMany(UserCertification::class);
     }
 
     /**
@@ -96,5 +107,20 @@ class User extends Authenticatable implements JWTSubject{
     public function reviewedDocuments()
     {
         return $this->hasMany(Document::class, 'reviewed_by');
+    }
+
+    /**
+     * Get the leave requests for the user.
+     */
+    public function leaveRequests(){
+        return $this->hasMany(LeaveRequest::class);
+    }
+
+    /**
+     * Get pending leave requests for approval (for HR/managers).
+     */
+    public function pendingLeaveApprovals(){
+        return $this->hasMany(LeaveRequest::class, 'approver_id')
+            ->where('status', 'pending');
     }
 }

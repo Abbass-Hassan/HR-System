@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
+use App\Services\SlackNotificationService;
 
 
 class AuthController extends Controller
@@ -25,6 +26,9 @@ class AuthController extends Controller
 
         $user = Auth::user();
         $user->token = $token;
+
+        $message = $user->first_name . " " . $user->last_name . " logged in";
+        SlackNotificationService::sendNotification($message, env("SLACK_LOGIN_WEBHOOK"));
 
         return response()->json([
             "success" => true,
@@ -67,6 +71,8 @@ class AuthController extends Controller
                 return redirect('http://localhost:5173/auth/google/callback?error=error');
             }
             $user->token = $token;
+            $message = $user->first_name . " " . $user->last_name . " logged in using Google";
+            SlackNotificationService::sendNotification($message, env("SLACK_LOGIN_WEBHOOK"));
 
             return redirect("http://localhost:5173/auth/google/callback?token={$token}");
 
