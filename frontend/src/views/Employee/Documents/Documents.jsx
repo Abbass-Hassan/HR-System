@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../services/Api.js';
 import './Documents.css';
 import SearchBar from '../../../components/common/SearchBar/SearchBar';
 import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import DocumentsTable from '../../../components/employee/DocumentsTable/DocumentsTable';
-
-const API_BASE_URL = 'http://localhost:8001';
 
 const Documents = () => {
   const navigate = useNavigate();
@@ -48,13 +46,8 @@ const Documents = () => {
   const fetchDocuments = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       
-      const response = await axios.get(`${API_BASE_URL}/api/v0.1/documents`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await api.get('/api/v0.1/documents');
       
       console.log('Documents response:', response.data);
       
@@ -104,13 +97,7 @@ const Documents = () => {
 
   const handleDeleteDocument = async (id) => {
     try {
-      const token = localStorage.getItem('token');
-      
-      const response = await axios.delete(`${API_BASE_URL}/api/v0.1/documents/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await api.delete(`/api/v0.1/documents/${id}`);
       
       if (response.data.success) {
         // Remove the document from state

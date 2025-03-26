@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './ApprovedDocuments.css';
 import SearchBar from '../../../components/common/SearchBar/SearchBar';
 import FilterButton from '../../../components/common/FilterButton/FilterButton';
 import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import ApprovedDocumentsTable from '../../../components/hr/ApprovedDocumentsTable/ApprovedDocumentsTable';
-
-const API_BASE_URL = 'http://localhost:8001';
+import api from '../../../services/Api.js';
 
 const ApprovedDocuments = () => {
   const [documents, setDocuments] = useState([]);
@@ -52,13 +50,8 @@ const ApprovedDocuments = () => {
   const fetchApprovedDocuments = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       
-      const response = await axios.get(`${API_BASE_URL}/api/v0.1/admin/documents?status=approved`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await api.get('/api/v0.1/admin/documents?status=approved');
       
       console.log('Approved documents response:', response.data);
       
@@ -122,7 +115,7 @@ const ApprovedDocuments = () => {
 
   const handleViewDocument = (filePath) => {
     // Construct the full URL to the document
-    const fileUrl = `${API_BASE_URL}/storage/${filePath}`;
+    const fileUrl = `${api.defaults.baseURL}/storage/${filePath}`;
     
     // Open the document in a new tab
     window.open(fileUrl, '_blank');
@@ -130,13 +123,7 @@ const ApprovedDocuments = () => {
 
   const handleDeleteDocument = async (id) => {
     try {
-      const token = localStorage.getItem('token');
-      
-      const response = await axios.delete(`${API_BASE_URL}/api/v0.1/admin/documents/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await api.delete(`/api/v0.1/admin/documents/${id}`);
       
       if (response.data.success) {
         // Remove the document from state

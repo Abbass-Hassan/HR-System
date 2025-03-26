@@ -51,7 +51,8 @@ function Login() {
 
   const handleGoogleLogin = (e) => {
     e.preventDefault()
-    const googleAuthURL = 'http://localhost:8000/api/v0.1/guest/auth/google'
+    // Use the same base URL as the API service
+    const googleAuthURL = `${api.defaults.baseURL}/api/v0.1/guest/auth/google`
 
     const width = 500
     const height = 600
