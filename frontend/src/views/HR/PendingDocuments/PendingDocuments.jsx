@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './PendingDocuments.css';
 import SearchBar from '../../../components/common/SearchBar/SearchBar';
 import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import RejectDocumentModal from '../../../components/hr/RejectDocumentModal/RejectDocumentModal';
 import PendingDocumentsTable from '../../../components/hr/PendingDocumentsTable/PendingDocumentsTable';
-
-const API_BASE_URL = 'http://localhost:8001';
+import api from '../../../services/Api';
 
 const PendingDocuments = () => {
   const [documents, setDocuments] = useState([]);
@@ -57,13 +55,8 @@ const PendingDocuments = () => {
   const fetchPendingDocuments = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       
-      const response = await axios.get(`${API_BASE_URL}/api/v0.1/admin/documents?status=pending`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await api.get('/api/v0.1/admin/documents?status=pending');
       
       console.log('Pending documents response:', response.data);
       
@@ -128,17 +121,7 @@ const PendingDocuments = () => {
 
   const handleApproveDocument = async (id) => {
     try {
-      const token = localStorage.getItem('token');
-      
-      const response = await axios.post(
-        `${API_BASE_URL}/api/v0.1/admin/documents/${id}/approve`,
-        {},
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
+      const response = await api.post(`/api/v0.1/admin/documents/${id}/approve`, {});
       
       if (response.data.success) {
         // Remove the document from the pending list
@@ -163,17 +146,9 @@ const PendingDocuments = () => {
 
   const handleRejectDocument = async (id, feedback) => {
     try {
-      const token = localStorage.getItem('token');
-      
-      const response = await axios.post(
-        `${API_BASE_URL}/api/v0.1/admin/documents/${id}/reject`,
-        { feedback },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
+      const response = await api.post(
+        `/api/v0.1/admin/documents/${id}/reject`,
+        { feedback }
       );
       
       if (response.data.success) {
