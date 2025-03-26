@@ -4,18 +4,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\UserController;
-<<<<<<< HEAD
 use App\Http\Controllers\Training\CourseController;
 use App\Http\Controllers\Training\EnrollmentController;
 use App\Http\Controllers\Training\ModuleController;
 use App\Http\Controllers\Training\AssessmentController;
 use App\Http\Controllers\Training\CertificationController;
-=======
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentApprovalController;
+use App\Http\Controllers\EmployeeLeaveController;
+use App\Http\Controllers\HRLeaveController;
 use Illuminate\Support\Facades\Storage;
->>>>>>> de3618394c9dfc6668aeb403e2d94035b679ae2c
 
 Route::group(["prefix" => "v0.1"], function(){
     //Authenticated Routes
@@ -34,7 +33,6 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::delete('/documents/{id}', [DocumentApprovalController::class, 'destroy']);
         });
 
-<<<<<<< HEAD
          //Training Routes
          Route::group(["prefix" => "training"], function(){
             // Course routes
@@ -62,7 +60,24 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::get('/certifications/{id}', [CertificationController::class, 'show']);
             Route::get('/certifications/available', [CertificationController::class, 'availableCertifications']);
         });
-=======
+        
+                    // Employee Leave Routes
+            Route::group(['prefix' => 'leave'], function() {
+                Route::get('/', [EmployeeLeaveController::class, 'index']);
+                Route::get('/{id}', [EmployeeLeaveController::class, 'show']);
+                Route::post('/', [EmployeeLeaveController::class, 'store']);
+                Route::post('/{id}/cancel', [EmployeeLeaveController::class, 'cancel']);
+            });
+
+            // HR Leave Management Routes
+            Route::group(['prefix' => 'admin/leave', 'middleware' => 'isAdmin'], function() {
+                Route::get('/', [HRLeaveController::class, 'index']);
+                Route::get('/pending', [HRLeaveController::class, 'pending']);
+                Route::get('/statistics', [HRLeaveController::class, 'statistics']);
+                Route::get('/{id}', [HRLeaveController::class, 'show']);
+                Route::post('/{id}/approve', [HRLeaveController::class, 'approve']);
+                Route::post('/{id}/reject', [HRLeaveController::class, 'reject']);
+            });
         // Attendance routes (accessible to all authenticated users)
         Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn']);
         Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
@@ -73,7 +88,6 @@ Route::group(["prefix" => "v0.1"], function(){
         Route::post('/documents', [DocumentController::class, 'store']);
         Route::get('/documents/{id}', [DocumentController::class, 'show']);
         Route::delete('/documents/{id}', [DocumentController::class, 'destroy']);
->>>>>>> de3618394c9dfc6668aeb403e2d94035b679ae2c
     });
 
     //Unauthenticated routes
@@ -81,13 +95,10 @@ Route::group(["prefix" => "v0.1"], function(){
         Route::post('/login', [AuthController::class, "login"]);
         Route::post('/signup', [AuthController::class, "signup"]);
 
-<<<<<<< HEAD
          // Public training routes
          Route::get('/courses/featured', [CourseController::class, 'featured']);
          Route::get('/certifications/popular', [CertificationController::class, 'popular']);
-=======
         Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
         Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
->>>>>>> de3618394c9dfc6668aeb403e2d94035b679ae2c
     });
 });
