@@ -14,7 +14,6 @@ class User extends Authenticatable implements JWTSubject{
 
     protected $hidden = [
         'password',
-        'email',
         'remember_token',
     ];
 
@@ -39,6 +38,7 @@ class User extends Authenticatable implements JWTSubject{
         "first_name"=> $this->first_name,
         "last_name"=> $this->last_name,
         "phone_number"=> $this->phone_number,
+        "profile_image"=> $this->profile_image,
         "status"=> $this->status,
         "employee_number"=>$this->employee_number,
         "hire_date"=> $this->hire_date,
