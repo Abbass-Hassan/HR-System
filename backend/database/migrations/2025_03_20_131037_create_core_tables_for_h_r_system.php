@@ -49,6 +49,8 @@ class CreateCoreTablesForHRSystem extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone_number')->nullable();
+            $table->string('profile_image')->nullable();
+
             $table->enum('status', ['active', 'inactive', 'on_leave', 'terminated']);
             $table->enum('account_type', ['employee', 'hr', 'manager']);
             $table->string('employee_number')->nullable()->unique();
