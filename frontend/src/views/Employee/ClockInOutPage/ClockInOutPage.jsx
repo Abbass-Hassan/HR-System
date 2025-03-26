@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../../services/Api.js";
 
 import RulesCard from "../../../components/common/RulesCard/RulesCard";
 import AttendanceCard from "../../../components/common/AttendanceCard/AttendanceCard";
 import TimeCard from "../../../components/common/TimeCard/TimeCard";
 import "./ClockInOutPage.css"; // <-- Updated CSS import name
-
-const API_BASE_URL = "http://localhost:8001";
 
 function ClockInOutPage() {
   const [attendanceStatus, setAttendanceStatus] = useState(null);
@@ -29,12 +27,7 @@ function ClockInOutPage() {
   const fetchAttendanceStatus = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${API_BASE_URL}/api/v0.1/attendance/status`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/api/v0.1/attendance/status");
       setAttendanceStatus(response.data);
       setMessage(null);
       setLoading(false);
@@ -48,16 +41,9 @@ function ClockInOutPage() {
   const handleClockIn = async () => {
     try {
       setMessage(null);
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${API_BASE_URL}/api/v0.1/attendance/clock-in`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
+      const response = await api.post(
+        "/api/v0.1/attendance/clock-in",
+        {}
       );
       setMessage({
         type: "success",
@@ -73,16 +59,9 @@ function ClockInOutPage() {
   const handleClockOut = async () => {
     try {
       setMessage(null);
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${API_BASE_URL}/api/v0.1/attendance/clock-out`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
+      const response = await api.post(
+        "/api/v0.1/attendance/clock-out",
+        {}
       );
       setMessage({
         type: "success",

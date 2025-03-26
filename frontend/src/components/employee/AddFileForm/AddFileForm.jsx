@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../services/Api.js';
 import CategorySelector from '../CategorySelector/CategorySelector';
 import FileUploader from '../FileUploader/FileUploader';
 import FilePreview from '../FilePreview/FilePreview';
@@ -63,16 +63,12 @@ const AddFileForm = () => {
       formData.append('category', selectedCategory); // Send category as separate field
       formData.append('file', uploadedFile);
       
-      // Get the token from localStorage
-      const token = localStorage.getItem('token');
-      
-      // Make API request to upload document
-      const response = await axios.post(
-        'http://localhost:8001/api/v0.1/documents', 
+      // Make API request to upload document using the API service
+      const response = await api.post(
+        '/api/v0.1/documents', 
         formData,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
           }
         }

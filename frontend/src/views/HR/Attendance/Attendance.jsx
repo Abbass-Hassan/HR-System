@@ -3,10 +3,7 @@ import './Attendance.css';
 import AttendanceSummaryCard from '../../../components/hr/AttendanceSummaryCard/AttendanceSummaryCard';
 import SearchBar from '../../../components/common/SearchBar/SearchBar';
 import AttendanceTable from '../../../components/hr/AttendanceTable/AttendanceTable';
-import axios from 'axios';
-
-// Set the correct backend URL
-const API_BASE_URL = 'http://localhost:8001';
+import api from '../../../services/Api.js';
 
 const Attendance = () => {
   // Initialize state
@@ -84,17 +81,13 @@ const Attendance = () => {
   const fetchAttendanceData = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       
       // Format date for API (YYYY-MM-DD)
       const formattedDate = selectedDate.toISOString().split('T')[0];
       console.log('Fetching attendance for date:', formattedDate);
       
-      const response = await axios.get(`${API_BASE_URL}/api/v0.1/admin/attendance`, {
-        params: { date: formattedDate },
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await api.get('/api/v0.1/admin/attendance', {
+        params: { date: formattedDate }
       });
 
       console.log('API Response:', response.data);
