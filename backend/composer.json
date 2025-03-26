@@ -7,6 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "firebase/php-jwt": "^6.11",
+        "google/cloud-core": "^1.62",
+        "google/cloud-dialogflow": "^1.0",
+        "google/gax": "^1.36",
         "laravel/framework": "^12.0",
         "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.10.1",
