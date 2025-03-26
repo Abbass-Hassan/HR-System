@@ -7,12 +7,16 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentApprovalController;
+use App\Http\Controllers\SupportController;
 use Illuminate\Support\Facades\Storage;
 
 Route::group(["prefix" => "v0.1"], function(){
-    //Authenticated Routes
+    // Support Chatbot Route - Available without authentication
+    Route::post('/support', [SupportController::class, 'getResponse']);
+    
+    // Authenticated Routes
     Route::group(["middleware" => "auth:api"], function(){
-        //Admin Routes (HR only)
+        // Admin Routes (HR only)
         Route::group(["prefix" => "admin", "middleware" => "isAdmin"], function(){
             Route::get('/dashboard', [UserController::class, "getUsers"]);
             Route::get('/attendance', [AttendanceController::class, 'getEmployeeAttendance']);
@@ -22,7 +26,6 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::get('/documents/statistics', [DocumentApprovalController::class, 'statistics']);
             Route::post('/documents/{id}/approve', [DocumentApprovalController::class, 'approve']);
             Route::post('/documents/{id}/reject', [DocumentApprovalController::class, 'reject']);
-
             Route::delete('/documents/{id}', [DocumentApprovalController::class, 'destroy']);
         });
 
@@ -38,7 +41,7 @@ Route::group(["prefix" => "v0.1"], function(){
         Route::delete('/documents/{id}', [DocumentController::class, 'destroy']);
     });
 
-    //Unauthenticated routes
+    // Unauthenticated routes
     Route::group(["prefix" => "guest"], function(){
         Route::post('/login', [AuthController::class, "login"]);
         Route::post('/signup', [AuthController::class, "signup"]);
