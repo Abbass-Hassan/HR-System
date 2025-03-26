@@ -21,3 +21,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Ignore Dialogflow credentials (or any JSON files in this folder)
+storage/credentials/*.json
