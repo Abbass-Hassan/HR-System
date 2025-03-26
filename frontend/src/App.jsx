@@ -19,6 +19,7 @@ import EmployeePayslipPage from './views/Employee/Payslip/Payslip'
 
 // Common Pages
 import Login from "./views/Common/Login/login";
+import AllEmployees from "./views/HR/AllEmployees/AllEmployees";
 
 
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/hr/pending-docs" element={<HRLayout><HRPendingDocs /></HRLayout>} />
         <Route path="/hr/approved-docs" element={<HRLayout><HRApprovedDocs /></HRLayout>} />
         <Route path="/hr/leave-management" element={<HRLayout><LeaveManagement /></HRLayout>} />
+        <Route path="/hr/all-employees" element={<HRLayout><AllEmployees /></HRLayout>} />
         
         {/* Employee Routes */}
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />
