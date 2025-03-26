@@ -28,6 +28,7 @@ const Profile = () => {
       confirm_password: user?.confirm_password,
     })
     setFullName(user?.first_name + ' ' + user?.last_name)
+    console.log(user);
   }, [user])
 
   const handleChange = (e) => {
@@ -76,7 +77,7 @@ const Profile = () => {
           <div className='profile-image-title'>
             <img
               className='profile-image'
-              src={profileImage}
+              src={'http://localhost:8000'+"/" + user?.profile_image}
               alt='profile-image.jpg'
             />
             <div className='profile-employee-name'>{fullname}</div>
