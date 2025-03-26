@@ -12,10 +12,10 @@ use App\Http\Controllers\Training\CertificationController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentApprovalController;
-use App\Http\Controllers\EmployeeLeaveController;
-use App\Http\Controllers\HRLeaveController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\SlackController;
+use App\Http\Controllers\API\EmployeeLeaveController;
+use App\Http\Controllers\API\HRLeaveController;
 
 
 Route::group(["prefix" => "v0.1"], function(){
@@ -44,6 +44,8 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::get('/courses', [CourseController::class, 'index']);
             Route::get('/courses/search', [CourseController::class, 'search']);
             Route::get('/courses/{id}', [CourseController::class, 'show']);
+            Route::get('/courses/available', [CourseController::class, 'available']);
+            Route::get('/courses/featured', [CourseController::class, 'featured']);
 
             // Enrollment routes
             Route::get('/enrollments', [EnrollmentController::class, 'index']);
@@ -64,18 +66,20 @@ Route::group(["prefix" => "v0.1"], function(){
             Route::get('/certifications', [CertificationController::class, 'index']);
             Route::get('/certifications/{id}', [CertificationController::class, 'show']);
             Route::get('/certifications/available', [CertificationController::class, 'availableCertifications']);
+            Route::get('/certifications/popular', [CertificationController::class, 'getPopularCertifications']);
         });
 
                     // Employee Leave Routes
-            Route::group(['prefix' => 'leave'], function() {
+           Route::group(['prefix' => 'leave', 'middleware' => 'auth:api'], function() {
                 Route::get('/', [EmployeeLeaveController::class, 'index']);
+                Route::get('/statistics', [EmployeeLeaveController::class, 'statistics']);
                 Route::get('/{id}', [EmployeeLeaveController::class, 'show']);
                 Route::post('/', [EmployeeLeaveController::class, 'store']);
                 Route::post('/{id}/cancel', [EmployeeLeaveController::class, 'cancel']);
-            });
+});
 
             // HR Leave Management Routes
-            Route::group(['prefix' => 'admin/leave', 'middleware' => 'isAdmin'], function() {
+            Route::group(['prefix' => 'admin/leave', 'middleware' => ['auth:api', 'isAdmin']], function() {
                 Route::get('/', [HRLeaveController::class, 'index']);
                 Route::get('/pending', [HRLeaveController::class, 'pending']);
                 Route::get('/statistics', [HRLeaveController::class, 'statistics']);

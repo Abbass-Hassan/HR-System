@@ -4,13 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\LeaveRequest;
-use App\Models\User;
+use App\Services\LeaveService;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class HRLeaveController extends Controller
 {
+    protected $leaveService;
+    
+    public function __construct(LeaveService $leaveService)
+    {
+        $this->leaveService = $leaveService;
+    }
+    
     public function index(Request $request)
     {
         $count = $request->query('count', 10);
@@ -21,7 +26,7 @@ class HRLeaveController extends Controller
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
         
-        $query = LeaveRequest::with(['user', 'approver']);
+        $query = \App\Models\LeaveRequest::with(['user', 'approver']);
         
         if ($status) {
             $query->where('status', $status);
@@ -66,7 +71,7 @@ class HRLeaveController extends Controller
         $count = $request->query('count', 10);
         $page = $request->query('page', 1);
         
-        $leaveRequests = LeaveRequest::with(['user', 'approver'])
+        $leaveRequests = \App\Models\LeaveRequest::with(['user', 'approver'])
             ->where('status', 'pending')
             ->latest()
             ->paginate($count, ['*'], 'page', $page);
@@ -85,7 +90,7 @@ class HRLeaveController extends Controller
     
     public function show($id)
     {
-        $leaveRequest = LeaveRequest::with(['user', 'approver'])->find($id);
+        $leaveRequest = \App\Models\LeaveRequest::with(['user', 'approver'])->find($id);
         
         if (!$leaveRequest) {
             return response()->json([
@@ -103,34 +108,21 @@ class HRLeaveController extends Controller
     public function approve($id)
     {
         $hr = Auth::user();
-        $leaveRequest = LeaveRequest::with('user')->find($id);
         
-        if (!$leaveRequest) {
+        try {
+            $leaveRequest = $this->leaveService->updateLeaveStatus($id, 'approved', null, $hr->id);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Leave request approved successfully',
+                'leave_request' => $this->transform($leaveRequest)
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Leave request not found'
-            ], 404);
-        }
-        
-        if ($leaveRequest->status !== 'pending') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Only pending leave requests can be approved'
+                'message' => $e->getMessage()
             ], 400);
         }
-        
-        $leaveRequest->status = 'approved';
-        $leaveRequest->approver_id = $hr->id;
-        $leaveRequest->approval_date = Carbon::now();
-        $leaveRequest->save();
-        
-        $leaveRequest = LeaveRequest::with(['user', 'approver'])->find($id);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Leave request approved successfully',
-            'leave_request' => $this->transform($leaveRequest)
-        ]);
     }
     
     public function reject(Request $request, $id)
@@ -140,115 +132,42 @@ class HRLeaveController extends Controller
         ]);
         
         $hr = Auth::user();
-        $leaveRequest = LeaveRequest::with('user')->find($id);
         
-        if (!$leaveRequest) {
+        try {
+            $leaveRequest = $this->leaveService->updateLeaveStatus(
+                $id, 
+                'rejected', 
+                $request->rejection_reason, 
+                $hr->id
+            );
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Leave request rejected successfully',
+                'leave_request' => $this->transform($leaveRequest)
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Leave request not found'
-            ], 404);
-        }
-        
-        if ($leaveRequest->status !== 'pending') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Only pending leave requests can be rejected'
+                'message' => $e->getMessage()
             ], 400);
         }
-        
-        $leaveRequest->status = 'rejected';
-        $leaveRequest->approver_id = $hr->id;
-        $leaveRequest->approval_date = Carbon::now();
-        $leaveRequest->rejection_reason = $request->rejection_reason;
-        $leaveRequest->save();
-
-        $leaveRequest = LeaveRequest::with(['user', 'approver'])->find($id);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Leave request rejected successfully',
-            'leave_request' => $this->transform($leaveRequest)
-        ]);
     }
     
     public function statistics(Request $request)
     {
-        $year = $request->query('year', Carbon::now()->year);
+        $year = $request->query('year');
         $month = $request->query('month');
         
-        $query = LeaveRequest::whereYear('start_date', $year)
-            ->orWhereYear('end_date', $year);
-            
-        if ($month) {
-            $query->where(function($q) use ($month) {
-                $q->whereMonth('start_date', $month)
-                  ->orWhereMonth('end_date', $month);
-            });
-        }
-        
-        $leaveByType = LeaveRequest::whereYear('start_date', $year)
-            ->get()
-            ->groupBy('leave_type')
-            ->map(function($group) {
-                return [
-                    'count' => $group->count(),
-                    'days' => $group->sum('total_days')
-                ];
-            });
-            
-        $leaveByStatus = LeaveRequest::whereYear('start_date', $year)
-            ->get()
-            ->groupBy('status')
-            ->map(function($group) {
-                return $group->count();
-            });
-            
-        $topLeaveUsers = [];
-        $leaveByUser = LeaveRequest::with('user')
-            ->whereYear('start_date', $year)
-            ->where('status', 'approved')
-            ->get()
-            ->groupBy('user_id');
-            
-        foreach ($leaveByUser as $userId => $requests) {
-            $user = $requests->first()->user;
-            if ($user) {
-                $topLeaveUsers[] = [
-                    'user_id' => $user->id,
-                    'name' => $user->first_name . ' ' . $user->last_name,
-                    'total_days' => $requests->sum('total_days')
-                ];
-            }
-        }
-        
-        usort($topLeaveUsers, function($a, $b) {
-            return $b['total_days'] <=> $a['total_days'];
-        });
-        $topLeaveUsers = array_slice($topLeaveUsers, 0, 5);
-        
-        $currentMonth = Carbon::now()->month;
-        $currentMonthName = Carbon::now()->format('F');
-        $currentMonthLeave = LeaveRequest::whereYear('start_date', $year)
-            ->whereMonth('start_date', $currentMonth)
-            ->where('status', 'approved')
-            ->count();
+        $statistics = $this->leaveService->getLeaveStatisticsForHR($year, $month);
         
         return response()->json([
             'success' => true,
-            'statistics' => [
-                'leave_by_type' => $leaveByType,
-                'leave_by_status' => $leaveByStatus,
-                'top_leave_users' => $topLeaveUsers,
-                'current_month' => [
-                    'name' => $currentMonthName,
-                    'count' => $currentMonthLeave
-                ],
-                'year' => $year
-            ]
+            'statistics' => $statistics
         ]);
     }
     
-    private function transform(LeaveRequest $leaveRequest)
+    private function transform($leaveRequest)
     {
         $result = [
             'id' => $leaveRequest->id,
