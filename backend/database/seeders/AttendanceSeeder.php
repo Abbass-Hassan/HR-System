@@ -16,34 +16,34 @@ class AttendanceSeeder extends Seeder
     public function run()
     {
         // Today's date
-        $today = Carbon::now()->format('Y-m-d');
-        
+        $targetDate = Carbon::parse('2025-03-25');
+
         // Row 1: User ID 1 - Present and clocked in/out
         DB::table('attendances')->insert([
             'user_id' => 1,
-            'date' => $today,
-            'clock_in' => Carbon::parse($today . ' 09:00:00'),
-            'clock_out' => Carbon::parse($today . ' 17:00:00'),
+            'date' => $targetDate->format('Y-m-d'),
+            'clock_in' => $targetDate->copy()->setTime(9, 0, 0),
+            'clock_out' => $targetDate->copy()->setTime(17, 0, 0),
             'total_hours' => 8.00,
             'location_status' => 'OnSite',
             'status' => 'Present',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-        
+
         // Row 2: User ID 2 - Late and still at work
         DB::table('attendances')->insert([
             'user_id' => 2,
-            'date' => $today,
-            'clock_in' => Carbon::parse($today . ' 09:30:00'),
+            'date' => $targetDate->format('Y-m-d'),
+            'clock_in' => $targetDate->copy()->setTime(9, 30, 0),
             'clock_out' => null,
-            'total_hours' => Carbon::now()->diffInMinutes(Carbon::parse($today . ' 09:30:00')) / 60,
+            'total_hours' => 0, // Keep 0 if still at work
             'location_status' => 'Remote',
             'status' => 'Late',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-        
-        $this->command->info('Created exactly 2 attendance records.');
+
+        $this->command->info('Inserted 2 attendance records for 2025-03-25.');
     }
 }
