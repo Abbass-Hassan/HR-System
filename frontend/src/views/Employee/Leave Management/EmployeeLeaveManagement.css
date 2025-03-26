@@ -1,0 +1,52 @@
+/* EmployeeLeaveManagement.css */
+.leave-management-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .section-heading {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 32px 0 16px 0;
+  }
+  
+  .leave-request-section {
+    margin-top: 32px;
+  }
+  
+  .leave-history-section {
+    margin-top: 32px;
+  }
+  
+  .error-message {
+    padding: 16px;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-radius: 8px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .retry-button {
+    background-color: #b91c1c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .retry-button:hover {
+    background-color: #991b1b;
+  }
+  
+  @media (max-width: 768px) {
+    .leave-management-container {
+      padding: 16px;
+    }
+  }

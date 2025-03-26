@@ -1,0 +1,107 @@
+/* TrainingDashboard.css */
+:root {
+    --primary-color: #008080;
+    --primary-light: #96C1C1;
+    --neutral-gray: #DBDBDB;
+    --white: #FFFFFF;
+    --text-dark: #111827;
+    --text-medium: #374151;
+    --text-light: #6B7280;
+  }
+  
+  .training-dashboard {
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .training-search {
+    margin-bottom: 2rem;
+  }
+  
+  .training-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  .my-courses-section {
+    grid-column: 1;
+  }
+  
+  .recommended-section, 
+  .available-courses-section {
+    grid-column: 2;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 0.5rem;
+  }
+  
+  .my-courses-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .recommended-courses-carousel,
+  .available-courses-carousel {
+    position: relative;
+    padding: 0 2rem;
+  }
+  
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--white);
+    border: 1px solid var(--neutral-gray);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+  .carousel-arrow.left {
+    left: 0;
+  }
+  
+  .carousel-arrow.right {
+    right: 0;
+  }
+  
+  .loading-indicator {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-medium);
+  }
+  
+  .empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-light);
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    border: 1px solid var(--neutral-gray);
+  }
+  
+  @media (max-width: 1024px) {
+    .training-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .my-courses-section,
+    .recommended-section,
+    .available-courses-section {
+      grid-column: 1;
+    }
+  }
