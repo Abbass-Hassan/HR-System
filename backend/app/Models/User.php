@@ -64,7 +64,9 @@ class User extends Authenticatable implements JWTSubject{
         return $this->belongsTo(Position::class);
     }
 
-    //Training related relationships
+  /**
+     * Get the enrolled cources and certificates
+     */
     public function courseEnrollments(){
         return $this->hasMany(CourseEnrollment::class);
     }
@@ -105,5 +107,20 @@ class User extends Authenticatable implements JWTSubject{
     public function reviewedDocuments()
     {
         return $this->hasMany(Document::class, 'reviewed_by');
+    }
+
+    /**
+     * Get the leave requests for the user.
+     */
+    public function leaveRequests(){
+        return $this->hasMany(LeaveRequest::class);
+    }
+
+    /**
+     * Get pending leave requests for approval (for HR/managers).
+     */
+    public function pendingLeaveApprovals(){
+        return $this->hasMany(LeaveRequest::class, 'approver_id')
+            ->where('status', 'pending');
     }
 }
