@@ -100,8 +100,34 @@ class LeaveRequest extends Model
         return $query->where('leave_type', $type);
     }
 
-    // Check if this leave request overlaps with other approved leave requests
-    // Not used in controllers anymore - left here for completeness
+    public static function calculateBusinessDays($startDate, $endDate)
+    {
+        $days = 0;
+        $current = Carbon::parse($startDate)->copy();
+        
+        while ($current->lte($endDate)) {
+            if ($current->dayOfWeek !== 0 && $current->dayOfWeek !== 6) {
+                $days++;
+            }
+            $current->addDay();
+        }
+        
+        return $days;
+    }
+
+    public static function getUserLeaveBalance($userId)
+    {
+        $defaultBalance = 14.0;
+
+        $usedLeave = self::where('user_id', $userId)
+            ->where('status', 'approved')
+            ->where('leave_type', 'vacation')
+            ->whereYear('start_date', Carbon::now()->year)
+            ->sum('total_days');
+        
+        return $defaultBalance - $usedLeave;
+    }
+
     public function hasOverlap()
     {
         if (!$this->user_id || !$this->start_date || !$this->end_date) {
@@ -111,7 +137,6 @@ class LeaveRequest extends Model
         $query = self::where('user_id', $this->user_id)
                      ->where('status', 'approved');
 
-        // Exclude the current leave request if it has an ID
         if ($this->id) {
             $query->where('id', '!=', $this->id);
         }

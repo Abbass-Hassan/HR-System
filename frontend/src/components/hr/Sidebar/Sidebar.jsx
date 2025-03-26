@@ -8,6 +8,7 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
 import { HiOutlineDocument } from "react-icons/hi"; 
+import { RiCalendarEventLine } from 'react-icons/ri';
 import CrewMateLogo from "../../../assets/images/crewmate-logo.svg";
 
 import "./Sidebar.css";
@@ -23,6 +24,8 @@ function Sidebar() {
       return { parent: "dashboard", subItem: "" };
     } else if (currentPath === "/hr/attendance") {
       return { parent: "employee", subItem: "attendance" };
+    } else if (currentPath === "/hr/leave-management") {
+      return { parent: "employee", subItem: "leave" };
     } else if (currentPath === "/hr/clock") {
       return { parent: "clock", subItem: "" };
     } else if (currentPath === "/hr/pending-docs") {
@@ -121,6 +124,8 @@ function Sidebar() {
     // Handle navigation based on subitem
     if (parentId === "employee" && subId === "attendance") {
       navigate("/hr/attendance");
+    } else if (parentId === "employee" && subId === "leave") {
+      navigate("/hr/leave-management");
     } else if (parentId === "documents" && subId === "pending") {
       navigate("/hr/pending-docs");
     } else if (parentId === "documents" && subId === "approved") {

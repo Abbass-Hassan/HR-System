@@ -1,0 +1,134 @@
+.course-card {
+    background-color: var(--white);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+  }
+  
+  .course-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .course-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .course-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-light);
+  }
+  
+  .course-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+.course-menu-container {
+    position: relative;
+  }
+  
+  .course-menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+  }
+  
+  .course-menu-button:hover {
+    background-color: var(--neutral-gray);
+  }
+  
+  .course-menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 11.25rem;
+    overflow: hidden;
+    border: 1px solid var(--neutral-gray);
+  }
+  
+  .course-menu-dropdown button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--text-medium);
+    transition: background-color 0.2s;
+  }
+  
+  .course-menu-dropdown button:hover {
+    background-color: var(--neutral-gray);
+  }
+  
+  .course-menu-dropdown button.quit-option {
+    color: #DC2626;
+  }
+  
+  .course-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .course-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+  }
+  
+  .course-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 0.5rem;
+    background-color: var(--neutral-gray);
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 0.25rem;
+  }
+  
+  .progress-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-medium);
+    min-width: 3rem;
+    text-align: right;
+  }
