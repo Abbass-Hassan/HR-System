@@ -117,4 +117,40 @@ class UserController extends Controller
         ],200);
     }
 
+    public function updateProfileImage(Request $request)
+    {
+        try {
+            $request->validate([
+                'image' => 'required|image'
+            ]);
+
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            if ($request->hasFile('image')) {
+                $fileName = time() . '_' . $request->file('image')->getClientOriginalName();
+
+                $filePath = $request->file('image')->storeAs('profile_images', $fileName, 'public');
+
+                $user->profile_image = 'storage/' . $filePath;
+                $user->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Profile image updated successfully'
+                ]);
+            }
+
+            return response()->json(['error' => 'Image upload failed'], 401);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => true,
+                'message' => $e->getMessage(),
+            ], 401);
+
+        }
+    }
 }

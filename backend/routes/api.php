@@ -23,6 +23,7 @@ Route::group(["prefix" => "v0.1"], function(){
         //Employee
         Route::post('/employee/editprofile/{change_password?}', [UserController::class, "employeeEditProfile"]);
         Route::get("/profile", [UserController::class,"userProfile"]);
+        Route::post('/employee/editprofileimage', [UserController::class, "updateProfileImage"]);
 
     });
 
