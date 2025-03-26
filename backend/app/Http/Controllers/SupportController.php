@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
-use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Log;
+use Google\Cloud\Dialogflow\V2\SessionsClient;
+use Google\Cloud\Dialogflow\V2\TextInput;
+use Google\Cloud\Dialogflow\V2\QueryInput;
 
 class SupportController extends Controller
 {
@@ -18,79 +19,36 @@ class SupportController extends Controller
                 return response()->json(['reply' => 'Please enter a valid query.'], 400);
             }
             
-            // Get service account credentials
+            // Set credentials path
             $credentialsPath = base_path('storage/credentials/dialogflow.json');
-            $credentials = json_decode(file_get_contents($credentialsPath), true);
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $credentialsPath);
             
-            // Create a session ID
-            $sessionId = uniqid();
-            $projectId = 'employeesupportagent-9gca';
+            // Create sessions client
+            $sessionsClient = new SessionsClient();
+            $sessionPath = $sessionsClient->sessionName('employeesupportagent-9gca', uniqid());
             
-            // Get access token
-            $accessToken = $this->getAccessToken($credentials);
+            // Create the text input
+            $textInput = new TextInput();
+            $textInput->setText($userQuery);
+            $textInput->setLanguageCode('en-US');
             
-            // Make direct API call to Dialogflow
-            $response = Http::withToken($accessToken)
-                ->post("https://dialogflow.googleapis.com/v2/projects/{$projectId}/agent/sessions/{$sessionId}:detectIntent", [
-                    'queryInput' => [
-                        'text' => [
-                            'text' => $userQuery,
-                            'languageCode' => 'en-US'
-                        ]
-                    ]
-                ]);
-                
-            if ($response->successful()) {
-                $fulfillmentText = $response->json()['queryResult']['fulfillmentText'] ?? 'No response found';
-                return response()->json(['reply' => $fulfillmentText]);
-            } else {
-                return response()->json(['error' => $response->body()], 500);
-            }
+            // Create the query input
+            $queryInput = new QueryInput();
+            $queryInput->setText($textInput);
+            
+            // Get response from Dialogflow
+            $response = $sessionsClient->detectIntent($sessionPath, $queryInput);
+            $queryResult = $response->getQueryResult();
+            $fulfillmentText = $queryResult->getFulfillmentText();
+            
+            // Close the client
+            $sessionsClient->close();
+            
+            return response()->json(['reply' => $fulfillmentText]);
             
         } catch (\Exception $e) {
-            \Log::error('Dialogflow error: ' . $e->getMessage());
+            Log::error('Dialogflow error: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
-    }
-    
-    private function getAccessToken($credentials)
-    {
-        // Check cache first
-        $cacheKey = 'dialogflow_token';
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-        
-        // Create JWT token
-        $now = time();
-        $payload = [
-            'iss' => $credentials['client_email'],
-            'sub' => $credentials['client_email'],
-            'aud' => 'https://oauth2.googleapis.com/token',
-            'iat' => $now,
-            'exp' => $now + 3600,
-            'scope' => 'https://www.googleapis.com/auth/dialogflow'
-        ];
-        
-        $jwt = JWT::encode($payload, $credentials['private_key'], 'RS256');
-        
-        // Exchange JWT for access token
-        $response = Http::asForm()->post('https://oauth2.googleapis.com/token', [
-            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-            'assertion' => $jwt
-        ]);
-        
-        if (!$response->successful()) {
-            \Log::error('OAuth error: ' . $response->body());
-            throw new \Exception('Could not obtain access token: ' . $response->body());
-        }
-        
-        $accessToken = $response->json()['access_token'];
-        $expiresIn = $response->json()['expires_in'] ?? 3600;
-        
-        // Cache token for future use (slightly less than expiry)
-        Cache::put($cacheKey, $accessToken, now()->addSeconds($expiresIn - 300));
-        
-        return $accessToken;
     }
 }

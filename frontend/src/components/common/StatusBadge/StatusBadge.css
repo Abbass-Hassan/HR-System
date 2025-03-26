@@ -30,6 +30,11 @@
   color: #2e7d32;
 }
 
+.status-badge.rejected {
+  background-color: rgba(211, 47, 47, 0.12);
+  color: #d32f2f;
+}
+
 .status-badge.denied {
   background-color: rgba(211, 47, 47, 0.12);
   color: #d32f2f;
@@ -38,4 +43,9 @@
 .status-badge.pending {
   background-color: rgba(237, 108, 2, 0.12);
   color: #ed6c02;
+}
+
+.status-badge.cancelled {
+  background-color: rgba(158, 158, 158, 0.12);
+  color: #757575;
 }

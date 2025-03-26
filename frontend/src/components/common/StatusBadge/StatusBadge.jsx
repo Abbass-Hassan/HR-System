@@ -26,7 +26,7 @@ const StatusBadge = ({ status }) => {
       case 'approved':
         return 'status-badge approved';
       case 'rejected':
-        return 'status-badge denied';
+        return 'status-badge rejected';
       case 'pending':
         return 'status-badge pending';
         
