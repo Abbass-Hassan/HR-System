@@ -1,17 +1,16 @@
 import React from 'react';
 import './DocumentsTable.css';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import StatusBadge from '../../common/StatusBadge/StatusBadge';
 
-const DocumentsTable = ({ data }) => {
+const DocumentsTable = ({ data, onDelete }) => {
   const documentsData = data || [];
 
-  const handleEdit = (id) => {
-    console.log('Edit document with ID:', id);
-  };
-
   const handleDelete = (id) => {
-    console.log('Delete document with ID:', id);
+    // Confirm before deleting
+    if (window.confirm('Are you sure you want to delete this document?')) {
+      onDelete(id);
+    }
   };
 
   return (
@@ -36,25 +35,22 @@ const DocumentsTable = ({ data }) => {
               <tr key={document.id}>
                 <td className="file-name">{document.fileName}</td>
                 <td>
-                  <StatusBadge status={document.status} />
+                  <StatusBadge status={document.status.toLowerCase()} />
                 </td>
                 <td>{document.category}</td>
                 <td>{document.date}</td>
                 <td className="actions-cell">
-                  <button 
-                    className="action-button edit"
-                    onClick={() => handleEdit(document.id)}
-                    title="Edit"
-                  >
-                    <Pencil size={18} />
-                  </button>
-                  <button 
-                    className="action-button delete"
-                    onClick={() => handleDelete(document.id)}
-                    title="Delete"
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  {document.status.toLowerCase() === 'pending' ? (
+                    <button 
+                      className="action-button delete"
+                      onClick={() => handleDelete(document.id)}
+                      title="Delete"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  ) : (
+                    <span className="no-action">-</span>
+                  )}
                 </td>
               </tr>
             ))}

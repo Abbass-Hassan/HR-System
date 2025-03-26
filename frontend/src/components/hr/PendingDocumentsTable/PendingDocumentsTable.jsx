@@ -2,22 +2,14 @@ import React from 'react';
 import './PendingDocumentsTable.css';
 import { CheckCircle, XCircle } from 'lucide-react';
 
-const DocumentsTable = ({ data }) => {
+const PendingDocumentsTable = ({ data, onApprove, onReject }) => {
   const documentsData = data || [];
-
-  const handleApprove = (id) => {
-    console.log('Approved document with ID:', id);
-  };
-
-  const handleReject = (id) => {
-    console.log('Rejected document with ID:', id);
-  };
 
   return (
     <div className="documents-table-container">
       {documentsData.length === 0 ? (
         <div className="empty-state">
-          <p>No documents found</p>
+          <p>No pending documents found</p>
         </div>
       ) : (
         <table className="documents-table">
@@ -40,14 +32,14 @@ const DocumentsTable = ({ data }) => {
                 <td className="actions-cell">
                   <button 
                     className="action-button approve"
-                    onClick={() => handleApprove(document.id)}
+                    onClick={() => onApprove(document.id)}
                     title="Approve"
                   >
                     <CheckCircle size={20} />
                   </button>
                   <button 
                     className="action-button reject"
-                    onClick={() => handleReject(document.id)}
+                    onClick={() => onReject(document.id)}
                     title="Reject"
                   >
                     <XCircle size={20} />
@@ -62,4 +54,4 @@ const DocumentsTable = ({ data }) => {
   );
 };
 
-export default DocumentsTable;
+export default PendingDocumentsTable;

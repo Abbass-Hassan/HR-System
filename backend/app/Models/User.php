@@ -89,4 +89,21 @@ class User extends Authenticatable implements JWTSubject{
         return $this->hasOne(Attendance::class)
             ->whereDate('date', now()->toDateString());
     }
+
+
+    /**
+     * Get the documents uploaded by the user.
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Get the documents reviewed by the user.
+     */
+    public function reviewedDocuments()
+    {
+        return $this->hasMany(Document::class, 'reviewed_by');
+    }
 }
