@@ -9,7 +9,7 @@ const PageHeader = ({ title, subTitle, subSubTitle }) => {
     year: 'numeric',
   })
   return (
-    <div className='page-header'>
+    <div className='page-header-component'>
       <div>
         <h1 className='page-header-title'>{title}</h1>
         <div className='page-header-subtitle'>
