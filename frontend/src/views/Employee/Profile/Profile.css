@@ -192,3 +192,79 @@ cursor: pointer;
     gap: 25px;
   }
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal-content .modal-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.modal-content .modal-image-preview {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+}
+
+
+.modal-content .model-file-input {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  width: 50%;
+}
+
+.modal-content .modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal-content .cancel-button,
+.modal-content .submit-button {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 35%;
+  border: 1px solid #b6b6b6;
+}
+
+.modal-content .cancel-button {
+  background-color: #ccc;
+  color: white;
+}
+
+.modal-content .submit-button {
+  background-color:var(--primary-color);
+  color: white;
+}
+
+.modal-content .cancel-button:hover {
+  background-color: #999;
+}
+
+.modal-content .submit-button:hover {
+  background-color: #266663;
+}
