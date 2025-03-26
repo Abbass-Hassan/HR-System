@@ -45,7 +45,7 @@ class CertificationController extends Controller
             ->orderBy('user_certification_count', 'desc')
             ->take(5)
             ->get();
-
+    
             return response()->json([
                 "success" => "true",
                 "certifications" => $certifications

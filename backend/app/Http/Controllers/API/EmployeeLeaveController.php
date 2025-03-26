@@ -4,14 +4,19 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\LeaveRequest;
-use App\Models\User;
+use App\Services\LeaveService;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
 class EmployeeLeaveController extends Controller
 {
+    protected $leaveService;
+    
+    public function __construct(LeaveService $leaveService)
+    {
+        $this->leaveService = $leaveService;
+    }
+    
     public function index(Request $request)
     {
         $count = $request->query('count', 10);
@@ -19,15 +24,7 @@ class EmployeeLeaveController extends Controller
         $status = $request->query('status');
         
         $user = Auth::user();
-        $query = LeaveRequest::where('user_id', $user->id);
-        
-        if ($status) {
-            $query->where('status', $status);
-        }
-        
-        $leaveRequests = $query->with(['user', 'approver'])
-            ->latest()
-            ->paginate($count, ['*'], 'page', $page);
+        $leaveRequests = $this->leaveService->getUserLeaveHistory($user->id, $count, $page, $status);
         
         return response()->json([
             'success' => true,
@@ -44,7 +41,7 @@ class EmployeeLeaveController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $leaveRequest = LeaveRequest::where('user_id', $user->id)
+        $leaveRequest = \App\Models\LeaveRequest::where('user_id', $user->id)
             ->with(['user', 'approver'])
             ->find($id);
             
@@ -63,109 +60,73 @@ class EmployeeLeaveController extends Controller
     
     public function store(Request $request)
     {
-        $today = Carbon::now()->format('Y-m-d');
-        
         $validated = $request->validate([
             'leave_type' => ['required', Rule::in(['vacation', 'sick', 'personal', 'maternity', 'paternity', 'bereavement', 'other'])],
-            'start_date' => ['required', 'date', 'after_or_equal:' . $today],
+            'start_date' => ['required', 'date', 'after_or_equal:today'],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'reason' => ['required', 'string', 'max:500'],
         ]);
         
         $user = Auth::user();
         
-        $startDate = Carbon::parse($validated['start_date']);
-        $endDate = Carbon::parse($validated['end_date']);
-        $totalDays = $this->calculateBusinessDays($startDate, $endDate);
-        
-        $leaveBalance = 14.0;
-        
-        if ($totalDays > $leaveBalance) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Insufficient leave balance. You have ' . $leaveBalance . ' days available.'
-            ], 400);
-        }
-        
-        $leaveRequest = new LeaveRequest([
-            'user_id' => $user->id,
-            'leave_type' => $validated['leave_type'],
-            'start_date' => $startDate,
-            'end_date' => $endDate,
-            'total_days' => $totalDays,
-            'balance' => $leaveBalance - $totalDays,
-            'requested_date' => Carbon::now(),
-            'status' => 'pending',
-            'reason' => $validated['reason']
-        ]);
-        
-        $hasOverlap = LeaveRequest::where('user_id', $user->id)
-            ->where('status', 'approved')
-            ->where(function($query) use ($startDate, $endDate) {
-                $query->whereBetween('start_date', [$startDate, $endDate])
-                    ->orWhereBetween('end_date', [$startDate, $endDate])
-                    ->orWhere(function($q) use ($startDate, $endDate) {
-                        $q->where('start_date', '<=', $startDate)
-                          ->where('end_date', '>=', $endDate);
-                    });
-            })->exists();
+        try {
+            $leaveRequest = $this->leaveService->createLeaveRequest($validated, $user->id);
             
-        if ($hasOverlap) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Leave request submitted successfully',
+                'leave_request' => $this->transform($leaveRequest)
+            ], 201);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'You already have approved leave during this period.'
+                'message' => $e->getMessage()
             ], 400);
         }
-        
-        $approver = User::where('account_type', 'hr')->first();
-        
-        if ($approver) {
-            $leaveRequest->approver_id = $approver->id;
-        }
-        
-        $leaveRequest->save();
-        
-        $leaveRequest = LeaveRequest::with(['user', 'approver'])->find($leaveRequest->id);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Leave request submitted successfully',
-            'leave_request' => $this->transform($leaveRequest)
-        ], 201);
     }
     
     public function cancel($id)
     {
         $user = Auth::user();
-        $leaveRequest = LeaveRequest::where('user_id', $user->id)
-            ->with(['user', 'approver'])
-            ->find($id);
         
-        if (!$leaveRequest) {
+        try {
+            $leaveRequest = $this->leaveService->cancelLeaveRequest($id, $user->id);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Leave request cancelled successfully',
+                'leave_request' => $this->transform($leaveRequest)
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Leave request not found or not authorized'
-            ], 404);
-        }
-        
-        if ($leaveRequest->status !== 'pending') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Only pending leave requests can be cancelled'
+                'message' => $e->getMessage()
             ], 400);
         }
+    }
+    
+    public function statistics()
+    {
+        $user = Auth::user();
+        $statistics = $this->leaveService->getUserLeaveStatistics($user->id);
         
-        $leaveRequest->status = 'cancelled';
-        $leaveRequest->save();
+        $leaveHistory = \App\Models\LeaveRequest::where('user_id', $user->id)
+            ->with('approver')
+            ->orderBy('requested_date', 'desc')
+            ->take(5)
+            ->get()
+            ->map(function($request) {
+                return $this->transform($request);
+            });
         
         return response()->json([
             'success' => true,
-            'message' => 'Leave request cancelled successfully',
-            'leave_request' => $this->transform($leaveRequest)
+            'statistics' => $statistics,
+            'leave_history' => $leaveHistory
         ]);
     }
     
-    private function transform(LeaveRequest $leaveRequest)
+    private function transform($leaveRequest)
     {
         $result = [
             'id' => $leaveRequest->id,
@@ -212,20 +173,5 @@ class EmployeeLeaveController extends Controller
         return $leaveRequests->map(function ($leaveRequest) {
             return $this->transform($leaveRequest);
         });
-    }
-    
-    private function calculateBusinessDays(Carbon $startDate, Carbon $endDate)
-    {
-        $days = 0;
-        $current = $startDate->copy();
-        
-        while ($current->lte($endDate)) {
-            if ($current->dayOfWeek !== 0 && $current->dayOfWeek !== 6) {
-                $days++;
-            }
-            $current->addDay();
-        }
-        
-        return $days;
     }
 }

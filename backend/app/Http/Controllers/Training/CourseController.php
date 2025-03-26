@@ -66,4 +66,15 @@ class CourseController extends Controller
             "courses" => $featuredCourses
         ]);
     }
+
+    public function available(){
+        $courses = Course::active()
+            ->take(10)
+            ->get();
+            
+        return response()->json([
+            "success" => true,
+            "courses" => $courses
+        ]);
+    }
 }
