@@ -15,7 +15,7 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { setToken } = useUser();
+  const { setUser } = useUser();
 
   const onLoginSuccess = (accountType) => {
     showToast('Success', 'Login Successfully')
@@ -27,27 +27,30 @@ function Login() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const response = await api.post('api/v0.1/guest/login', { email, password });
+      const response = await api.post('api/v0.1/guest/login', {
+        email,
+        password,
+      })
       if (response.data.success) {
-        const token = response.data.user.token;
+        const token = response.data.user.token
         localStorage.setItem('token', token)
-        setToken(token);
+        const user = jwtDecode(token)
+        setUser(user)
         // localStorage.setItem('id', response.data.user.id);
         // localStorage.setItem('fullname', `${response.data.user.first_name} ${response.data.user.last_name}`);
         // localStorage.setItem('account_type', response.data.user.account_type);
-        console.log(jwtDecode(token))
-        onLoginSuccess(jwtDecode(token).account_type);
+        onLoginSuccess(user.account_type)
       } else {
-        setError(response.data.error);
+        setError(response.data.error)
       }
     } catch (err) {
-      console.error(err);
-      setError('An error occurred. Please try again.');
+      console.error(err)
+      setError('An error occurred. Please try again.')
       showToast('Error', 'Email or Password not correct')
     }
-  };
+  }
 
   const handleGoogleLogin = (e) => {
     e.preventDefault()
@@ -73,8 +76,10 @@ function Login() {
       } else if (event.data?.token) {
         const token = event.data.token
         localStorage.setItem('token', token)
-        setToken(token)
-        onLoginSuccess(jwtDecode(token).account_type)
+        const user = jwtDecode(token)
+        setUser(user)
+
+        onLoginSuccess(user.account_type)
         showToast('Success', 'Login successfully')
       }
 
