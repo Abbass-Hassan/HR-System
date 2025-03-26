@@ -14,29 +14,37 @@ const ApprovedDocuments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('all');
 
   // Fetch documents on component mount
   useEffect(() => {
     fetchApprovedDocuments();
   }, []);
 
-  // Filter documents when searchTerm changes
+  // Filter documents when searchTerm or selectedUser changes
   useEffect(() => {
     filterDocuments();
-  }, [searchTerm, documents]);
+  }, [searchTerm, selectedUser, documents]);
 
   const filterDocuments = () => {
-    if (!searchTerm.trim()) {
-      setFilteredDocuments(documents);
-      return;
+    let filtered = [...documents];
+    
+    // Filter by search term if provided
+    if (searchTerm.trim()) {
+      const searchTermLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(doc => 
+        doc.fileName.toLowerCase().includes(searchTermLower) ||
+        doc.category.toLowerCase().includes(searchTermLower)
+      );
     }
     
-    const searchTermLower = searchTerm.toLowerCase();
-    const filtered = documents.filter(doc => 
-      doc.fileName.toLowerCase().includes(searchTermLower) ||
-      doc.uploadedBy.toLowerCase().includes(searchTermLower) ||
-      doc.category.toLowerCase().includes(searchTermLower)
-    );
+    // Filter by selected user if not 'all'
+    if (selectedUser !== 'all') {
+      filtered = filtered.filter(doc => 
+        doc.originalData.user_id.toString() === selectedUser
+      );
+    }
     
     setFilteredDocuments(filtered);
   };
@@ -75,6 +83,22 @@ const ApprovedDocuments = () => {
         
         setDocuments(formattedDocs);
         setFilteredDocuments(formattedDocs);
+        
+        // Extract unique users for the filter
+        const uniqueUsers = [];
+        const userMap = new Map();
+        
+        response.data.documents.forEach(doc => {
+          if (doc.user && !userMap.has(doc.user.id)) {
+            userMap.set(doc.user.id, true);
+            uniqueUsers.push({
+              id: doc.user.id,
+              name: `${doc.user.first_name} ${doc.user.last_name}`
+            });
+          }
+        });
+        
+        setUsers(uniqueUsers);
       } else {
         setDocuments([]);
         setFilteredDocuments([]);
@@ -92,9 +116,8 @@ const ApprovedDocuments = () => {
     setSearchTerm(term);
   };
 
-  const handleFilter = () => {
-    // Implement filtering logic based on your requirements
-    console.log('Filter button clicked');
+  const handleUserChange = (e) => {
+    setSelectedUser(e.target.value);
   };
 
   const handleViewDocument = (filePath) => {
@@ -119,12 +142,9 @@ const ApprovedDocuments = () => {
         // Remove the document from state
         const updatedDocs = documents.filter(doc => doc.id !== id);
         setDocuments(updatedDocs);
-        setFilteredDocuments(updatedDocs.filter(doc => 
-          !searchTerm || 
-          doc.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          doc.uploadedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          doc.category.toLowerCase().includes(searchTerm.toLowerCase())
-        ));
+        
+        // Reapply filters
+        filterDocuments();
         
         // Show success message
         alert('Document deleted successfully');
@@ -159,10 +179,24 @@ const ApprovedDocuments = () => {
       <div className="table-controls-container">
         <SearchBar 
           onSearch={handleSearch} 
-          placeholder="Search by name, category, or employee..."
+          placeholder="Search by name or category..."
         />
         <div className="right-controls">
-          <FilterButton onClick={handleFilter} />
+          {/* User filter dropdown */}
+          <div className="user-filter">
+            <select 
+              value={selectedUser} 
+              onChange={handleUserChange}
+              className="user-select"
+            >
+              <option value="all">All Users</option>
+              {users.map(user => (
+                <option key={user.id} value={user.id.toString()}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 

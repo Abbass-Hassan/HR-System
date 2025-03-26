@@ -40,8 +40,7 @@ const DocumentsTable = ({ data, onDelete }) => {
                 <td>{document.category}</td>
                 <td>{document.date}</td>
                 <td className="actions-cell">
-                  {/* Only show delete button for pending documents */}
-                  {document.canDelete && (
+                  {document.status.toLowerCase() === 'pending' ? (
                     <button 
                       className="action-button delete"
                       onClick={() => handleDelete(document.id)}
@@ -49,6 +48,8 @@ const DocumentsTable = ({ data, onDelete }) => {
                     >
                       <Trash2 size={18} />
                     </button>
+                  ) : (
+                    <span className="no-action">-</span>
                   )}
                 </td>
               </tr>

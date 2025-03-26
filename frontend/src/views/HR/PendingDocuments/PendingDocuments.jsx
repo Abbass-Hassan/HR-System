@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PendingDocuments.css';
 import SearchBar from '../../../components/common/SearchBar/SearchBar';
-import FilterButton from '../../../components/common/FilterButton/FilterButton';
 import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import RejectDocumentModal from '../../../components/hr/RejectDocumentModal/RejectDocumentModal';
 import PendingDocumentsTable from '../../../components/hr/PendingDocumentsTable/PendingDocumentsTable';
@@ -15,6 +14,8 @@ const PendingDocuments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('all');
   
   // For the reject modal
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -25,23 +26,30 @@ const PendingDocuments = () => {
     fetchPendingDocuments();
   }, []);
 
-  // Filter documents when searchTerm changes
+  // Filter documents when searchTerm or selectedUser changes
   useEffect(() => {
     filterDocuments();
-  }, [searchTerm, documents]);
+  }, [searchTerm, selectedUser, documents]);
 
   const filterDocuments = () => {
-    if (!searchTerm.trim()) {
-      setFilteredDocuments(documents);
-      return;
+    let filtered = [...documents];
+    
+    // Filter by search term if provided
+    if (searchTerm.trim()) {
+      const searchTermLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(doc => 
+        doc.fileName.toLowerCase().includes(searchTermLower) ||
+        doc.uploadedBy.toLowerCase().includes(searchTermLower) ||
+        doc.category.toLowerCase().includes(searchTermLower)
+      );
     }
     
-    const searchTermLower = searchTerm.toLowerCase();
-    const filtered = documents.filter(doc => 
-      doc.fileName.toLowerCase().includes(searchTermLower) ||
-      doc.uploadedBy.toLowerCase().includes(searchTermLower) ||
-      doc.category.toLowerCase().includes(searchTermLower)
-    );
+    // Filter by selected user if not 'all'
+    if (selectedUser !== 'all') {
+      filtered = filtered.filter(doc => 
+        doc.originalData.user_id.toString() === selectedUser
+      );
+    }
     
     setFilteredDocuments(filtered);
   };
@@ -76,6 +84,22 @@ const PendingDocuments = () => {
         
         setDocuments(formattedDocs);
         setFilteredDocuments(formattedDocs);
+        
+        // Extract unique users for the filter
+        const uniqueUsers = [];
+        const userMap = new Map();
+        
+        response.data.documents.forEach(doc => {
+          if (doc.user && !userMap.has(doc.user.id)) {
+            userMap.set(doc.user.id, true);
+            uniqueUsers.push({
+              id: doc.user.id,
+              name: `${doc.user.first_name} ${doc.user.last_name}`
+            });
+          }
+        });
+        
+        setUsers(uniqueUsers);
       } else {
         setDocuments([]);
         setFilteredDocuments([]);
@@ -93,8 +117,12 @@ const PendingDocuments = () => {
     setSearchTerm(term);
   };
 
+  const handleUserChange = (e) => {
+    setSelectedUser(e.target.value);
+  };
+
   const handleFilter = () => {
-    // Implement filtering logic based on your requirements
+    // You might implement additional filtering logic here
     console.log('Filter button clicked');
   };
 
@@ -116,12 +144,9 @@ const PendingDocuments = () => {
         // Remove the document from the pending list
         const updatedDocs = documents.filter(doc => doc.id !== id);
         setDocuments(updatedDocs);
-        setFilteredDocuments(updatedDocs.filter(doc => 
-          !searchTerm || 
-          doc.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          doc.uploadedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          doc.category.toLowerCase().includes(searchTerm.toLowerCase())
-        ));
+        
+        // Reapply filters
+        filterDocuments();
         
         alert('Document approved successfully');
       }
@@ -155,12 +180,9 @@ const PendingDocuments = () => {
         // Remove the document from the pending list
         const updatedDocs = documents.filter(doc => doc.id !== id);
         setDocuments(updatedDocs);
-        setFilteredDocuments(updatedDocs.filter(doc => 
-          !searchTerm || 
-          doc.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          doc.uploadedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          doc.category.toLowerCase().includes(searchTerm.toLowerCase())
-        ));
+        
+        // Reapply filters
+        filterDocuments();
         
         setShowRejectModal(false);
         alert('Document rejected successfully');
@@ -203,7 +225,21 @@ const PendingDocuments = () => {
           placeholder="Search by name, category, or employee..."
         />
         <div className="right-controls">
-          <FilterButton onClick={handleFilter} />
+          {/* User filter dropdown */}
+          <div className="user-filter">
+            <select 
+              value={selectedUser} 
+              onChange={handleUserChange}
+              className="user-select"
+            >
+              <option value="all">All Users</option>
+              {users.map(user => (
+                <option key={user.id} value={user.id.toString()}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
