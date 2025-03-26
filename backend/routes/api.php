@@ -22,6 +22,8 @@ use App\Http\Controllers\API\HRLeaveController;
 Route::group(["prefix" => "v0.1"], function(){
     // Support Chatbot Route - Available without authentication
     Route::post('/support', [SupportController::class, 'getResponse']);
+    Route::post('/send-slack-project', [SlackController::class, 'sendToProjectChannel']);
+    Route::post('/send-slack-login', [SlackController::class, 'sendToLoginChannel']);
     
     // Authenticated Routes
     Route::group(["middleware" => "auth:api"], function(){
