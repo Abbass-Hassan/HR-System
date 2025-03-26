@@ -18,6 +18,13 @@ const Profile = () => {
   const [fullname, setFullName] = useState(
     employee?.first_name + ' ' + employee?.last_name
   )
+  const [image, setImage] = useState(
+    'http://localhost:8000' + '/' + user?.profile_image
+  )
+  const [oldImage, setOldImage] = useState(image)
+  const [file, setFile] = useState(null)
+  const [isOpen, setIsOpen] = useState(false)
+
   useEffect(() => {
     setEmployee({
       first_name: user?.first_name,
@@ -28,7 +35,7 @@ const Profile = () => {
       confirm_password: user?.confirm_password,
     })
     setFullName(user?.first_name + ' ' + user?.last_name)
-    console.log(user);
+    console.log(user)
   }, [user])
 
   const handleChange = (e) => {
@@ -49,17 +56,45 @@ const Profile = () => {
         `/api/v0.1/employee/editprofile/${changePassword ? 'change' : ''}`,
         employee
       )
-      setUser({
-        ...user,
-        ...employee,
-        password: '',
-        confirm_password: '',
-      })
 
       if (response.data.success) {
+        setUser({
+          ...user,
+          ...employee,
+          password: '',
+          confirm_password: '',
+        })
         showToast('Success', response.data.message)
       } else {
         showToast('Error', 'Error updating profile')
+      }
+    } catch (error) {
+      showToast('Error', error.response.data.message)
+    }
+  }
+
+  const handleImageChange = (event) => {
+    const selectedFile = event.target.files[0]
+    if (selectedFile) {
+      setImage(URL.createObjectURL(selectedFile))
+      setFile(selectedFile)
+    }
+  }
+
+  const handleUpdatProfileImage = async () => {
+    try {
+      if (file) {
+        const fromdata = new FormData()
+        fromdata.append('image', file)
+        const response = await api.post(
+          `/api/v0.1/employee/editprofileimage`,
+          fromdata
+        )
+        if (response.data?.success) {
+          setUser({ ...user, profile_image: response.data?.profile_image })
+          setIsOpen(false)
+          showToast('Success', response.data?.message)
+        }
       }
     } catch (error) {
       showToast('Error', error.response.data.message)
@@ -77,11 +112,47 @@ const Profile = () => {
           <div className='profile-image-title'>
             <img
               className='profile-image'
-              src={'http://localhost:8000'+"/" + user?.profile_image}
+              src={user?.profile_image ? image : profileImage}
               alt='profile-image.jpg'
+              onClick={() => setIsOpen(true)}
             />
             <div className='profile-employee-name'>{fullname}</div>
           </div>
+          {isOpen && (
+            <div className='modal-overlay'>
+              <div className='modal-content'>
+                <p className='modal-title'>Update Profile Image</p>
+                <img
+                  className='modal-image-preview'
+                  src={image}
+                  alt='preview'
+                />
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageChange}
+                  className='model-file-input'
+                />
+                <div className='modal-buttons'>
+                  <button
+                    className='cancel-button'
+                    onClick={() => {
+                      setIsOpen(false)
+                      setImage(oldImage)
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className='submit-button'
+                    onClick={handleUpdatProfileImage}
+                  >
+                    Update Image
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           <form className='profile-form'>
             {/* row 2 inputs next to each other  */}
             <div className='two-form-inputs'>
