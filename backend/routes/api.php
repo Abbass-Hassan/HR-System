@@ -15,8 +15,13 @@ use App\Http\Controllers\DocumentApprovalController;
 use App\Http\Controllers\EmployeeLeaveController;
 use App\Http\Controllers\HRLeaveController;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\SlackController;
+
 
 Route::group(["prefix" => "v0.1"], function(){
+    Route::post('/send-slack-project', [SlackController::class, 'sendToProjectChannel']);
+    Route::post('/send-slack-login', [SlackController::class, 'sendToLoginChannel']);
+
     //Authenticated Routes
     Route::group(["middleware" => "auth:api"], function(){
         //Admin Routes
@@ -106,5 +111,6 @@ Route::group(["prefix" => "v0.1"], function(){
          Route::get('/certifications/popular', [CertificationController::class, 'popular']);
         Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
         Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
     });
 });
