@@ -1,31 +1,73 @@
 .add-file-form {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eaeaea;
-    padding: 32px;
-    width: 100%;
-    max-width: 800px;
-  }
-  
-  .submit-btn {
-    background-color: #2e7d72;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.2s;
-  }
-  
-  .submit-btn:hover {
-    background-color: #266a60;
-  }
-  
-  .submit-btn:disabled {
-    background-color: #9CA3AF;
-    cursor: not-allowed;
-  }
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
+  padding: 32px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #374151;
+  background-color: #fff;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #2e7d72;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(46, 125, 114, 0.1);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.submit-btn {
+  background-color: #2e7d72;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+  margin-top: 24px;
+}
+
+.submit-btn:hover {
+  background-color: #266a60;
+}
+
+.submit-btn:disabled {
+  background-color: #9CA3AF;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #DC2626;
+  margin-top: 8px;
+  font-size: 14px;
+}
