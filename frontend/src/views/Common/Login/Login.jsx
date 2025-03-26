@@ -15,7 +15,10 @@ function Login() {
     const accountType = localStorage.getItem('account_type');
     if (accountType === 'hr') {
       navigate('/hr');
-    } else {
+    } else if (accountType === 'manager'){
+      navigate('/manager/addTask');
+    }
+    else{
       navigate('/employee');
     }
   };
