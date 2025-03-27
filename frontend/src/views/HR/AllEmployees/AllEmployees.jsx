@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AllEmployees.css";
-import SearchBar from "../../../components/common/SearchBar/SearchBar";
+import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import api from "../../../services/Api";
 
 const AllEmployees = () => {
@@ -9,7 +10,8 @@ const AllEmployees = () => {
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
   const [count] = useState(15);
-
+  const [openMenu, setOpenMenu] = useState(null); 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -30,19 +32,6 @@ const AllEmployees = () => {
     fetchUsers();
   }, [count, page]);
 
-  const handleSearch = (query) => {
-    const lowercasedQuery = query.toLowerCase();
-    const filtered = users.filter((user) => {
-      const fullName = (user.first_name + " " + user.last_name).toLowerCase();
-      const accountType = user.account_type?.toLowerCase() || "";
-      return (
-        fullName.includes(lowercasedQuery) ||
-        accountType.includes(lowercasedQuery)
-      );
-    });
-    setFilteredUsers(filtered);
-  };
-
   const goToPreviousPage = () => {
     if (page > 1) {
       setPage((prev) => prev - 1);
@@ -53,15 +42,55 @@ const AllEmployees = () => {
     setPage((prev) => prev + 1);
   };
 
+  const toggleMenu = (userId) => {
+    setOpenMenu((prev) => (prev === userId ? null : userId));
+  };
+
+  const deleteEmployee = async (userId) => {
+    try {
+      await api.delete(`/api/v0.1/admin/deleteuser/${userId}`);
+      const updatedUsers = users.filter((user) => user.id !== userId);
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+      setOpenMenu(null);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to delete employee.');
+    }
+  };
+
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
   return (
-    <div className="users-list-container">
-      <SearchBar onSearch={handleSearch} />
+    <div>
+            <div className="employee-r-header">
+        <div>
+          <h1 className="employee-r-title">Add Employee</h1>
+        </div>
+        <DateDisplay date={formattedDate} className="header-date" />
+      </div>
+      <div className="users-list-container">
 
       {error && <div className="error-message">{error}</div>}
 
       <div className="cards-grid">
         {filteredUsers.map((user) => (
           <div key={user.id} className="card">
+            <div className="menu-button" onClick={() => toggleMenu(user.id)}>
+              &#8942;
+            </div>
+            {openMenu === user.id && (
+              <div className="menu-dropdown">
+                <div className="menu-item" onClick={() => deleteEmployee(user.id)}>
+                  Delete Employee
+                </div>
+              </div>
+            )}
             <div className="avatar-placeholder">
               {user.first_name.charAt(0).toUpperCase()}
             </div>
@@ -70,17 +99,16 @@ const AllEmployees = () => {
                 {user.first_name} {user.last_name}
               </h3>
               <p className="user-role">
-                {user.hr_position
-                  ? user.hr_position
-                  : user.account_type === "hr"
-                  ? "HR"
-                  : "Employee"}
-              </p>
+              {user.account_type === "hr"
+                ? "HR"
+                : user.account_type === "manager"
+                ? "Manager"
+                : "Employee"}
+            </p>
             </div>
           </div>
         ))}
-
-        <div className="card add-card">
+        <div className="card add-card" onClick={() => navigate('/hr/add-employee')}>
           <div className="add-icon">+</div>
           <p>Add New Employee</p>
         </div>
@@ -95,6 +123,7 @@ const AllEmployees = () => {
           Next 
         </button>
       </div>
+    </div>
     </div>
   );
 };

@@ -47,20 +47,13 @@ class UserController extends Controller
             }
         }
 
-        $validationRules = [
-            'email'       => 'required|email|unique:users,email' . ($id !== "add" ? ",{$id},user_id" : ''),
-            'first_name'  => 'required|string|max:255',
-            'last_name'   => 'required|string|max:255',
-            'phoneNb'     => 'nullable|string|max:20',
-            'account_type'=> 'required|in:employee,hr,manager',
-        ];
-        $validatedData = $request->validate($validationRules);
-
-        $user->email       = $validatedData['email'];
-        $user->first_name  = $validatedData['first_name'];
-        $user->last_name   = $validatedData['last_name'];
-        $user->phoneNb     = $validatedData['phoneNb'] ?? null;
-        $user->account_type= $validatedData['account_type'];
+        $user->email       = $request['email'];
+        $user->first_name  = $request['first_name'];
+        $user->last_name   = $request['last_name'];
+        $user->phone_number     = $request['phone_number'] ?? null;
+        $user->account_type= $request['account_type'];
+        $user->status      = 'active';
+        $user->password    = bcrypt($request['password']);
         $user->save();
 
         return response()->json([

@@ -12,6 +12,9 @@ Route::group(["prefix" => "v0.1"], function(){
         // Admin Routes
         Route::group(["prefix" => "admin", "middleware" => "isAdmin"], function(){
             Route::get('/getusers/{count}/{page}/{id?}', [UserController::class, "getUsers"]);
+            Route::delete('/deleteuser/{id}', [UserController::class, "deleteUser"]);
+            Route::post('/addOrUpdateUser/{id?}', [UserController::class, "addOrUpdateUser"]);
+
         });
 
         // User Routes

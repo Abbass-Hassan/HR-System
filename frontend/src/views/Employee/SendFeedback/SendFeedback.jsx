@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../services/Api';
+import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import './SendFeedback.css';
 
 const SendFeedback = () => {
@@ -53,8 +54,22 @@ const SendFeedback = () => {
     }
   };
 
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
   return (
-    <div className="send-feedback-container">
+    <div>
+            <div className="employee-r-header">
+        <div>
+          <h1 className="employee-r-title">Add Employee</h1>
+        </div>
+        <DateDisplay date={formattedDate} className="header-date" />
+      </div>
+      <div className="send-feedback-container">
       <h2>Send Feedback</h2>
       {tasks.length === 0 ? (
         <p>No completed tasks found.</p>
@@ -101,6 +116,7 @@ const SendFeedback = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };

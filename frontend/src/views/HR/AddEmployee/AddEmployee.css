@@ -1,0 +1,80 @@
+.employee-form-container1 {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.employee-form-container1 h2 {
+    color: #008080;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.employee-form-container1 form {
+    display: flex;
+    flex-direction: column;
+}
+
+.employee-form-container1 label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.employee-form-container1 input[type="email"],
+.employee-form-container1 input[type="text"],
+.employee-form-container1 input[type="password"],
+.employee-form-container1 textarea,
+.employee-form-container1 select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.employee-form-container1 textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.employee-form-container1 button {
+    background-color: #008080;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.employee-form-container1 button:hover {
+    background-color: #006666;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.employee-r-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  
+  .employee-r-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 8px 0;
+  }

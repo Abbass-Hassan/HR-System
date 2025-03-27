@@ -10,6 +10,7 @@ import HRPendingDocs from "./views/HR/PendingDocuments/PendingDocuments";
 import HRApprovedDocs from "./views/HR/ApprovedDocuments/ApprovedDocuments";
 import LeaveManagement from './views/HR/LeaveManagement/LeaveManagement';
 import AllEmployees from "./views/HR/AllEmployees/AllEmployees";
+import AddEmployee from "./views/HR/AddEmployee/AddEmployee";
 
 // Employee Pages
 import EmployeeDashboardPage from "./views/Employee/Dashboard/Dashboard";
@@ -17,13 +18,13 @@ import EmployeeDocumentsPage from "./views/Employee/Documents/Documents";
 import AddFilePage from "./views/Employee/AddFile/AddFile";
 import EmployeeProfilePage from "./views/Employee/Profile/Profile";
 import EmployeePayslipPage from './views/Employee/Payslip/Payslip';
-import EmployeeViewTasksPage from './views/Employee/ViewTasks/ViewTasks';
+import EmployeeViewTasksPage from './views/Employee/EmployeeViewTasks/EmployeeViewTasks';
 import EmployeeViewFeedbackPage from './views/Employee/ViewFeedback/ViewFeedback';
 
 //Manager Pages
-import ManagerAddTaskPage from './views/Manager/AddTask/AddTask';
-import ManagerSendFeedbackPage from './views/Manager/SendFeedback/SendFeedback';
-import ManagerViewFeedbackPage from './views/Manager/ViewTasks/ViewTasks';
+import ManagerAddTaskPage from './views/Employee/AddTask/AddTask';
+import ManagerSendFeedbackPage from './views/Employee/SendFeedback/SendFeedback';
+import ManagerViewFeedbackPage from './views/Employee/ManagerViewTasks/ManagerViewTasks';
 
 // Common Pages
 import Login from "./views/Common/Login/login";
@@ -39,6 +40,7 @@ function App() {
         <Route path="/hr/approved-docs" element={<HRLayout><HRApprovedDocs /></HRLayout>} />
         <Route path="/hr/leave-management" element={<HRLayout><LeaveManagement /></HRLayout>} />
         <Route path="/hr/all-employees" element={<HRLayout><AllEmployees /></HRLayout>} />
+        <Route path="/hr/add-employee" element={<HRLayout><AddEmployee /></HRLayout>} />
         
         {/* Employee Routes */}
         <Route path="/employee" element={<EmployeeLayout><EmployeeDashboardPage /></EmployeeLayout>} />
@@ -50,9 +52,9 @@ function App() {
         <Route path="/employee/viewfeedback" element={<EmployeeLayout><EmployeeViewFeedbackPage /></EmployeeLayout>}/>
 
         {/* Manager Routes */}
-        <Route path="/manager/addtask" element={<ManagerAddTaskPage />}/>
-        <Route path="/manager/sendfeedback" element={<ManagerSendFeedbackPage />}/>
-        <Route path="/manager/viewtasks" element={<ManagerViewFeedbackPage />}/>
+        <Route path="/employee/addtask" element={<EmployeeLayout><ManagerAddTaskPage /></EmployeeLayout>}/>
+        <Route path="/employee/sendfeedback" element={<EmployeeLayout><ManagerSendFeedbackPage /></EmployeeLayout>}/>
+        <Route path="/employee/viewtasks" element={<EmployeeLayout><ManagerViewFeedbackPage /></EmployeeLayout>}/>
 
 
         {/* Common Routes */}

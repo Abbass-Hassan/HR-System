@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../services/Api';
+import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
 import './ViewTasks.css';
 
 const ViewTasks = () => {
@@ -26,7 +27,6 @@ const ViewTasks = () => {
       if (!response.data.success) {
         alert("Failed to update task status.");
       } else {
-        // Update the tasks state with the new status
         setTasks(prevTasks =>
           prevTasks.map(task =>
             task.id === taskId ? { ...task, status: newStatus } : task
@@ -39,8 +39,22 @@ const ViewTasks = () => {
     }
   };
 
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
   return (
-    <div className="view-tasks-container">
+    <div>
+            <div className="employee-r-header">
+        <div>
+          <h1 className="employee-r-title">Add Employee</h1>
+        </div>
+        <DateDisplay date={formattedDate} className="header-date" />
+      </div>
+      <div className="view-tasks-container">
       <h2>Your Tasks</h2>
       {tasks.length === 0 ? (
         <p>No tasks found.</p>
@@ -85,6 +99,7 @@ const ViewTasks = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };

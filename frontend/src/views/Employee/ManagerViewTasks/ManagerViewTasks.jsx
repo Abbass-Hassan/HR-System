@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../services/Api';
-import './ViewTasks.css';
+import DateDisplay from '../../../components/common/DateDisplay/DateDisplay';
+import './ManagerViewTasks.css';
 
 const ViewTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -20,8 +21,22 @@ const ViewTasks = () => {
     fetchTasks();
   }, []);
 
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
   return (
-    <div className="view-tasks-container">
+    <div>
+            <div className="employee-r-header">
+        <div>
+          <h1 className="employee-r-title">Add Employee</h1>
+        </div>
+        <DateDisplay date={formattedDate} className="header-date" />
+      </div>
+      <div className="view-tasks-container">
       <h2>Assigned Tasks</h2>
       {tasks.length === 0 ? (
         <p>No tasks assigned.</p>
@@ -55,6 +70,7 @@ const ViewTasks = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };
