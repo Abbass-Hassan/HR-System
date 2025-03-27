@@ -17,7 +17,7 @@ class LeaveService
      */
     public function getUserLeaveStatistics($userId)
     {
-        $leaveBalance = LeaveRequest::getUserLeaveBalance($userId);
+        $leaveBalance = $this->calculateUserLeaveBalance($userId);
         
         $pendingRequests = LeaveRequest::where('user_id', $userId)
             ->where('status', 'pending')
@@ -36,26 +36,47 @@ class LeaveService
     }
     
     /**
+     * Calculate user's leave balance
+     */
+    private function calculateUserLeaveBalance($userId)
+    {
+        // Default annual leave balance for all employees
+        $defaultBalance = 21;
+        
+        // Get total used leave days for this year
+        $usedDays = LeaveRequest::where('user_id', $userId)
+            ->where('status', 'approved')
+            ->whereYear('start_date', Carbon::now()->year)
+            ->sum('total_days');
+            
+        return $defaultBalance - $usedDays;
+    }
+    
+    /**
      * Create a new leave request
-     * 
-     * @param array $data
-     * @param int $userId
-     * @return LeaveRequest
      */
     public function createLeaveRequest(array $data, $userId)
     {
         $startDate = Carbon::parse($data['start_date']);
         $endDate = Carbon::parse($data['end_date']);
-        $totalDays = LeaveRequest::calculateBusinessDays($startDate, $endDate);
+        $totalDays = $this->calculateBusinessDays($startDate, $endDate);
         
-        $leaveBalance = LeaveRequest::getUserLeaveBalance($userId);
+        $leaveBalance = $this->calculateUserLeaveBalance($userId);
         
         // Check if user has enough leave days
         if ($totalDays > $leaveBalance && $data['leave_type'] === 'vacation') {
             throw new \Exception('Insufficient leave balance. You have ' . $leaveBalance . ' days available.');
         }
         
-        // Check for overlapping leave requests
+        // Check for overlapping leave
+        $hasOverlap = $this->checkForOverlap($userId, $startDate, $endDate);
+        if ($hasOverlap) {
+            throw new \Exception('You already have approved leave during this period.');
+        }
+        
+        // Find an HR approver
+        $approver = User::where('account_type', 'hr')->first();
+        
         $leaveRequest = new LeaveRequest([
             'user_id' => $userId,
             'leave_type' => $data['leave_type'],
@@ -65,18 +86,9 @@ class LeaveService
             'balance' => $leaveBalance - $totalDays,
             'requested_date' => Carbon::now(),
             'status' => 'pending',
-            'reason' => $data['reason'] ?? $data['leave_type']
+            'reason' => $data['reason'] ?? $data['leave_type'],
+            'approver_id' => $approver ? $approver->id : null
         ]);
-        
-        if ($leaveRequest->hasOverlap()) {
-            throw new \Exception('You already have approved leave during this period.');
-        }
-        
-        // Find an HR approver
-        $approver = User::where('account_type', 'hr')->first();
-        if ($approver) {
-            $leaveRequest->approver_id = $approver->id;
-        }
         
         $leaveRequest->save();
         
@@ -84,13 +96,24 @@ class LeaveService
     }
     
     /**
+     * Check for overlapping leave requests
+     */
+    private function checkForOverlap($userId, $startDate, $endDate)
+    {
+        return LeaveRequest::where('user_id', $userId)
+            ->where('status', 'approved')
+            ->where(function($q) use ($startDate, $endDate) {
+                $q->whereBetween('start_date', [$startDate, $endDate])
+                  ->orWhereBetween('end_date', [$startDate, $endDate])
+                  ->orWhere(function($q2) use ($startDate, $endDate) {
+                      $q2->where('start_date', '<=', $startDate)
+                         ->where('end_date', '>=', $endDate);
+                  });
+            })->exists();
+    }
+    
+    /**
      * Update leave request status
-     * 
-     * @param int $id
-     * @param string $status
-     * @param string|null $rejectionReason
-     * @param int $approverId
-     * @return LeaveRequest
      */
     public function updateLeaveStatus($id, $status, $rejectionReason = null, $approverId)
     {
@@ -110,17 +133,11 @@ class LeaveService
         
         $leaveRequest->save();
         
-        // TODO: Send notification to employee
-        
         return $leaveRequest;
     }
     
     /**
      * Cancel a leave request
-     * 
-     * @param int $id
-     * @param int $userId
-     * @return LeaveRequest
      */
     public function cancelLeaveRequest($id, $userId)
     {
@@ -140,12 +157,6 @@ class LeaveService
     
     /**
      * Get leave history for a user
-     * 
-     * @param int $userId
-     * @param int $count
-     * @param int $page
-     * @param string|null $status
-     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getUserLeaveHistory($userId, $count = 10, $page = 1, $status = null)
     {
@@ -161,11 +172,25 @@ class LeaveService
     }
     
     /**
+     * Calculate business days between two dates (excluding weekends)
+     */
+    public function calculateBusinessDays($startDate, $endDate)
+    {
+        $days = 0;
+        $current = $startDate->copy();
+        
+        while ($current->lte($endDate)) {
+            if ($current->isWeekday()) {
+                $days++;
+            }
+            $current->addDay();
+        }
+        
+        return $days;
+    }
+    
+    /**
      * Get leave statistics for HR
-     * 
-     * @param int|null $year
-     * @param int|null $month
-     * @return array
      */
     public function getLeaveStatisticsForHR($year = null, $month = null)
     {

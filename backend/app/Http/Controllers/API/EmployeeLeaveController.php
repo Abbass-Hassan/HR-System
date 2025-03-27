@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\LeaveService;
+use App\Models\LeaveRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
@@ -41,7 +42,7 @@ class EmployeeLeaveController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $leaveRequest = \App\Models\LeaveRequest::where('user_id', $user->id)
+        $leaveRequest = LeaveRequest::where('user_id', $user->id)
             ->with(['user', 'approver'])
             ->find($id);
             
@@ -110,7 +111,7 @@ class EmployeeLeaveController extends Controller
         $user = Auth::user();
         $statistics = $this->leaveService->getUserLeaveStatistics($user->id);
         
-        $leaveHistory = \App\Models\LeaveRequest::where('user_id', $user->id)
+        $leaveHistory = LeaveRequest::where('user_id', $user->id)
             ->with('approver')
             ->orderBy('requested_date', 'desc')
             ->take(5)
@@ -128,6 +129,10 @@ class EmployeeLeaveController extends Controller
     
     private function transform($leaveRequest)
     {
+        if (!$leaveRequest) {
+            return null;
+        }
+        
         $result = [
             'id' => $leaveRequest->id,
             'leave_type' => $leaveRequest->leave_type,

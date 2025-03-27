@@ -7,7 +7,7 @@ import SearchBar from '../../../components/common/SearchBar/SearchBar';
 import CourseCard from '../../../components/employee/Training/CourseCard/CourseCard';
 import RecommendedCourseCard from '../../../components/employee/Training/RecommendedCourseCard/RecommendedCourseCard';
 
-const API_BASE_URL = 'http://localhost:8001';
+const API_BASE_URL = 'http://localhost:8000';
 
 const TrainingDashboard = () => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import axios from "axios";
 import "./AssessmentResultView.css";
 import PageHeader from "../../../common/PageHeader/PageHeader";
 
-const API_BASE_URL = "http://localhost:8001";
+const API_BASE_URL = "http://localhost:8000";
 
 const AssessmentResultView = () => {
   const { id } = useParams();

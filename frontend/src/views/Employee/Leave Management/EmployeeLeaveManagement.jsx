@@ -5,7 +5,7 @@ import Layout from '../../../components/employee/Layout/Layout';
 import PageHeader from '../../../components/common/PageHeader/PageHeader';
 import LeaveStatisticsCards from '../../../components/employee/Training/LeaveStatisticsCards/LeaveStatisticsCards';
 import LeaveRequestForm from '../../../components/employee/LeaveRequestForm/LeaveRequestForm';
-import LeaveHistoryTable from '../../../components/employee/LeaveHistoryTable/LeaveHistoryTable';
+import LeaveHistoryTable from '../../../components/common/LeaveHistoryTable/LeaveHistoryTable';
 import './EmployeeLeaveManagement.css';
 
 const EmployeeLeaveManagement = () => {
@@ -50,7 +50,6 @@ const EmployeeLeaveManagement = () => {
   };
 
   return (
-    <Layout>
       <div className="leave-management-container">
         <PageHeader 
           title="Leave Management" 
@@ -84,7 +83,6 @@ const EmployeeLeaveManagement = () => {
           )}
         </div>
       </div>
-    </Layout>
   );
 };
 

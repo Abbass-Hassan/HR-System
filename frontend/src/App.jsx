@@ -8,7 +8,7 @@ import HRDashboardPage from "./views/HR/Dashboard/Dashboard";
 import HRAttendancePage from "./views/HR/Attendance/Attendance";
 import HRPendingDocs from "./views/HR/PendingDocuments/PendingDocuments";
 import HRApprovedDocs from "./views/HR/ApprovedDocuments/ApprovedDocuments";
-//import LeaveManagement from './views/HR/LeaveManagement/LeaveManagement';
+import LeaveManagement from "./views/HR/LeaveManagement/LeaveManagement";
 import HRClockInOutPage from "./views/HR/ClockInOutPage/ClockInOutPage";
 
 // Employee Pages
@@ -18,14 +18,15 @@ import AddFilePage from "./views/Employee/AddFile/AddFile";
 import EmployeeProfilePage from "./views/Employee/Profile/Profile";
 import EmployeePayslipPage from './views/Employee/Payslip/Payslip'
 import EmployeeClockInOutPage from "./views/Employee/ClockInOutPage/ClockInOutPage";
-//import EmployeeLeaveManagement from './views/Employee/LeaveManagement/EmployeeLeaveManagement';
-import TrainingDashboard from "./views/Employee/Training/TrainingDashboard";
-//import CourseView from "./views/Employee/Training/CourseView";
-//import ModuleView from "./views/Employee/Training/ModuleView";
-//import AssessmentView from "./views/Employee/Training/AssessmentView";
-//import AssessmentResultView from "./views/Employee/Training/AssessmentResultView";
-//import CertificationsView from "./views/Employee/Training/CertificationsView";
+import EmployeeLeaveManagement from "./views/Employee/Leave Management/EmployeeLeaveManagement";
 
+// Training imports
+import TrainingDashboard from "./views/Employee/Training/TrainingDashboard";
+import CourseView from "./components/employee/Training/CourseView/CourseView";
+import ModuleView from "./components/employee/Training/ModuleView/ModuleView";
+import AssessmentView from "./components/employee/Training/AssessmentView/AssessmentView";
+import AssessmentResultView from "./components/employee/Training/AssessmentResultView/AssessmentResultView";
+import CertificationsView from "./components/employee/Training/CertificationsView/CertificationsView";
 
 // Common Pages
 import Login from "./views/Common/Login/Login";
@@ -54,14 +55,14 @@ function App() {
         
         <Route path="/employee/profile" element={<EmployeeLayout><EmployeeProfilePage /></EmployeeLayout>} />
         <Route path="/employee/payslip" element={<EmployeeLayout><EmployeePayslipPage /></EmployeeLayout>} />
-        {/* <Route path="/employee/leave" element={<EmployeeLayout><EmployeeLeaveManagement /></EmployeeLayout>} /> */}
+        {<Route path="/employee/leave" element={<EmployeeLayout><EmployeeLeaveManagement /></EmployeeLayout>} />}
 
-        {/* // Training pages
+        
         <Route path="/employee/training" element={<EmployeeLayout><TrainingDashboard /></EmployeeLayout>} />
         <Route path="/employee/training/course/:id" element={<EmployeeLayout><CourseView /></EmployeeLayout>} />
         <Route path="/employee/training/module/:id" element={<EmployeeLayout><ModuleView /></EmployeeLayout>} />
         <Route path="/employee/training/assessment/:id" element={<EmployeeLayout><AssessmentView /></EmployeeLayout>} />
-        <Route path="/employee/training/certifications" element={<EmployeeLayout><CertificationsView /></EmployeeLayout>} /> */}
+        <Route path="/employee/training/certifications" element={<EmployeeLayout><CertificationsView /></EmployeeLayout>} /> 
 
         {/* Common Routes */}
         <Route path="/" element={<Login />} />

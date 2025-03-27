@@ -5,7 +5,7 @@ import axios from "axios";
 import "./CertificationsView.css";
 import PageHeader from "../../../common/PageHeader/PageHeader";
 
-const API_BASE_URL = "http://localhost:8001";
+const API_BASE_URL = "http://localhost:8000";
 
 const CertificationsView = () => {
   const navigate = useNavigate();

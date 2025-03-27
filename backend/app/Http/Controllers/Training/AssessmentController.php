@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Auth;
 
 class AssessmentController extends Controller
 {
+    public function show($id)
+    {
+        return $this->getAssessment($id);
+    }
+
+    public function submit(Request $request, $id)
+    {
+        return $this->submitAssessment($request, $id);
+    }
+    
+    public function result($id)
+    {
+        return $this->getResult($id);
+    }
+
     function getAssessment($id)
     {
         $assessment = ModuleAssessment::with(['module.course'])->find($id);

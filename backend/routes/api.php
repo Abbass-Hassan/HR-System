@@ -45,9 +45,10 @@ Route::group(["prefix" => "v0.1"], function(){
             // Course routes
             Route::get('/courses', [CourseController::class, 'index']);
             Route::get('/courses/search', [CourseController::class, 'search']);
-            Route::get('/courses/{id}', [CourseController::class, 'show']);
             Route::get('/courses/available', [CourseController::class, 'available']);
             Route::get('/courses/featured', [CourseController::class, 'featured']);
+            Route::get('/courses/{id}', [CourseController::class, 'show']);
+            
 
             // Enrollment routes
             Route::get('/enrollments', [EnrollmentController::class, 'index']);

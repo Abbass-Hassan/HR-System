@@ -5,7 +5,7 @@ import './CourseView.css';
 import PageHeader from '../../../common/PageHeader/PageHeader';
 import StatusBadge from '../../../common/StatusBadge/StatusBadge';
 
-const API_BASE_URL = 'http://localhost:8001';
+const API_BASE_URL = 'http://localhost:8000';
 
 const CourseView = () => {
   const { id } = useParams();
