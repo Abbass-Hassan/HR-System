@@ -117,21 +117,7 @@ function Sidebar() {
               <span>Leave Requests</span>
             </button>
           </li>
-          <li className="sidebar__bottom-section">
-            <button
-              type="button"
-              className={
-                isActive("/employee/help")
-                  ? "sidebar__link sidebar__link--active"
-                  : "sidebar__link"
-              }
-              onClick={() => handleItemClick("/employee/help")}
-            >
-              <IoMdHelpCircleOutline className="sidebar__icon" />
-              <span>Help</span>
-            </button>
-          </li>
-          // In Sidebar.jsx, add this to the menu items
+          
           <li>
             <button
               type="button"
